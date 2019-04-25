@@ -1,0 +1,8 @@
+E:\aaa\project\MaiDongXi\MaiDongXi.Entity\bin\Debug\netcoreapp2.1\MaiDongXi.Entity.deps.json
+E:\aaa\project\MaiDongXi\MaiDongXi.Entity\bin\Debug\netcoreapp2.1\MaiDongXi.Entity.dll
+E:\aaa\project\MaiDongXi\MaiDongXi.Entity\bin\Debug\netcoreapp2.1\MaiDongXi.Entity.pdb
+E:\aaa\project\MaiDongXi\MaiDongXi.Entity\obj\Debug\netcoreapp2.1\MaiDongXi.Entity.csproj.CoreCompileInputs.cache
+E:\aaa\project\MaiDongXi\MaiDongXi.Entity\obj\Debug\netcoreapp2.1\MaiDongXi.Entity.AssemblyInfoInputs.cache
+E:\aaa\project\MaiDongXi\MaiDongXi.Entity\obj\Debug\netcoreapp2.1\MaiDongXi.Entity.AssemblyInfo.cs
+E:\aaa\project\MaiDongXi\MaiDongXi.Entity\obj\Debug\netcoreapp2.1\MaiDongXi.Entity.dll
+E:\aaa\project\MaiDongXi\MaiDongXi.Entity\obj\Debug\netcoreapp2.1\MaiDongXi.Entity.pdb

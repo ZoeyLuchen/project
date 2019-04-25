@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MaiDongXi.Entity\MaiDongXi.Entity.csproj" />
+    <ProjectReference Include="..\MaiDongXi.IRepository\MaiDongXi.IRepository.csproj" />
+  </ItemGroup>
+
+</Project>

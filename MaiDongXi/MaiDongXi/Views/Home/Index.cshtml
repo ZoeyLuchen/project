@@ -1,0 +1,46 @@
+﻿@using MaiDongXi.Entity
+@{
+    ViewData["Title"] = "Home Page";
+    var list = ViewBag.UserList as List<User>;
+}
+
+<table>
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (list != null && list.Any())
+            {
+                foreach (var item in list)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+<div>
+    名称:<input type="text" id="txtName"/>
+    <br />
+    <input type="button" value="添加" onclick="add()"/>
+</div>
+
+@section Scripts{ 
+    <script type="text/javascript">
+        function add() { 
+            var name = $("#txtName").val();
+
+            $.post("/Home/Add", { name: name }, function () {
+                console.log(11111)
+            });
+
+        }
+    </script>
+}
