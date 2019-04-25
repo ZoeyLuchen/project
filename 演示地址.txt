@@ -12,7 +12,7 @@ http://certebs.ebs.org.cn:800/BScreen/screenS/
 商丘市睢阳区雪苑农贸市场诚信监控平台
 平台
 
-http://certebs.ebs.org.cn:800/Mall/
+http://certebs.ebs.org.cn:800/Mall/d
 
 商户端
 
