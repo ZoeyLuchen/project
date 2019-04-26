@@ -28,6 +28,8 @@ namespace MaiDongXi.IRepository
 
         void DeleteWhere(Expression<Func<T, bool>> predicate);
 
+        bool Any(Expression<Func<T, bool>> predicate);
+
         void Commit();
     }
 }

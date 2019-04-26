@@ -38,6 +38,7 @@ namespace MaiDongXi
 
             services.AddDbContext<MDXDbContext>(o=>o.UseMySQL(Configuration.GetConnectionString("SqlServerConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSession();
 
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<AutoFacModule>();
@@ -63,6 +64,7 @@ namespace MaiDongXi
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

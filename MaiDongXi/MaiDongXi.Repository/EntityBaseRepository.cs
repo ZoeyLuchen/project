@@ -93,6 +93,10 @@ namespace MaiDongXi.Repository
             }
         }
 
+        public virtual bool Any(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().Any(predicate);
+        }
         public virtual void Commit()
         {
             _context.SaveChanges();
