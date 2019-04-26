@@ -6,9 +6,9 @@ using System.Text;
 
 namespace MaiDongXi.Repository
 {
-    public class UserRepository : EntityBaseRepository<User>, IUserRepository, IAutofacBase
+    public class UserInfoRepository : EntityBaseRepository<UserInfo>, IUserInfoRepository, IAutofacBase
     {
-        public UserRepository(MDXDbContext context) : base(context)
+        public UserInfoRepository(MDXDbContext context) : base(context)
         {
         }
     }

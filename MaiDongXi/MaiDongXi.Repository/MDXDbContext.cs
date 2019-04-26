@@ -14,6 +14,6 @@ namespace MaiDongXi.Repository
         {
         }
 
-        public DbSet<User> User { get; set; }
+        public DbSet<UserInfo> User { get; set; }
     }
 }

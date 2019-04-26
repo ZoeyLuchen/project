@@ -1,7 +1,7 @@
 ﻿@using MaiDongXi.Entity
 @{
     ViewData["Title"] = "Home Page";
-    var list = ViewBag.UserList as List<User>;
+    var list = ViewBag.UserList as List<UserInfo>;
 }
 
 <table>
@@ -19,7 +19,7 @@
                 {
                     <tr>
                         <td>@item.Id</td>
-                        <td>@item.Name</td>
+                        <td>@item.UserName</td>
                     </tr>
                 }
             }
@@ -37,7 +37,7 @@
         function add() { 
             var name = $("#txtName").val();
 
-            $.post("/Home/Add", { name: name }, function () {
+            $.post("/Home/Add", { userName: name }, function () {
                 console.log(11111)
             });
 

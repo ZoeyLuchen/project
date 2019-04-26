@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MaiDongXi.IRepository
 {
-    public interface IUserRepository:IEntityBaseRepository<User>
+    public interface IUserInfoRepository:IEntityBaseRepository<UserInfo>
     {
     }
 }

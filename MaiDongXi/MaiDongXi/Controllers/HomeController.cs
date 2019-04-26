@@ -12,23 +12,23 @@ namespace MaiDongXi.Controllers
 {
     public class HomeController : Controller
     {
-        IUserRepository _userRepository;
+        IUserInfoRepository _userInfoRepository;
 
-        public HomeController(IUserRepository userRepository) {
-            _userRepository = userRepository;
+        public HomeController(IUserInfoRepository userInfoRepository) {
+            _userInfoRepository = userInfoRepository;
         }
 
         public IActionResult Index()
         {
-            var list = _userRepository.GetAll().ToList();
+            var list = _userInfoRepository.GetAll().ToList();
             ViewBag.UserList = list;
             return View();
         }
 
-        public IActionResult Add(User model)
+        public IActionResult Add(UserInfo model)
         {
-            _userRepository.Add(model);
-            _userRepository.Commit();
+            _userInfoRepository.Add(model);
+            _userInfoRepository.Commit();
 
             return Json("");
         }
