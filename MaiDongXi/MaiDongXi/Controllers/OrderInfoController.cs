@@ -45,7 +45,7 @@ namespace MaiDongXi.Controllers
         /// <returns></returns>
         public IActionResult GetListByPages(PageInfo pageInfo, OrderInfoParam param)
         {
-            var result = _orderInfoRepository.GetListByPages(param, pageInfo);
+            var result = _orderInfoRepository.GetListByPages(pageInfo,param);
             return JsonOk(result);
         }
 

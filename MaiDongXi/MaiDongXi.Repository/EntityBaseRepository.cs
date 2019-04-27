@@ -11,7 +11,7 @@ namespace MaiDongXi.Repository
 {
     public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class, IEntityBase, new()
     {
-        private MDXDbContext _context;
+        public MDXDbContext _context;
         #region Properties
 
         public EntityBaseRepository(MDXDbContext context)

@@ -1,6 +1,5 @@
 ﻿using MaiDongXi.Entity;
 using MaiDongXi.IRepository;
-using MaiDongXi.IRepository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Text;

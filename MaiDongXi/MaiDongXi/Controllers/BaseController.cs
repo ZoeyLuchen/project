@@ -6,20 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MaiDongXi.Controllers
 {
-    [UserAuthorize]
+    //[UserAuthorize]
     public class BaseController : Controller
     {
-        public BaseController()
-        {
-            try
-            {
-                CurrentUserInfo = UserHelper.CurrentUserInfo;
-            }
-            catch
-            {
-                Response.Redirect("/Login/Index");
-            }
-        }
+        //public BaseController()
+        //{
+        //    try
+        //    {
+        //        CurrentUserInfo = UserHelper.CurrentUserInfo;
+        //    }
+        //    catch
+        //    {
+        //        Response.Redirect("/Login/Index");
+        //    }
+        //}
 
         public IActionResult JsonOk<T>(T data,string message ="")
         {
