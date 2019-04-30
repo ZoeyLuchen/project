@@ -1,46 +1,9 @@
 ﻿@using MaiDongXi.Entity
 @{
-    ViewData["Title"] = "Home Page";
-    var list = ViewBag.UserList as List<UserInfo>;
+    ViewData["Title"] = "首页";
 }
 
-<table>
-    <thead>
-        <tr>
-            <td>Id</td>
-            <td>Name</td>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            if (list != null && list.Any())
-            {
-                foreach (var item in list)
-                {
-                    <tr>
-                        <td>@item.Id</td>
-                        <td>@item.UserName</td>
-                    </tr>
-                }
-            }
-        }
-    </tbody>
-</table>
-<div>
-    名称:<input type="text" id="txtName"/>
-    <br />
-    <input type="button" value="添加" onclick="add()"/>
-</div>
+<a href="/OrderInfo/ManageIndex">订单列表</a>
 
 @section Scripts{ 
-    <script type="text/javascript">
-        function add() { 
-            var name = $("#txtName").val();
-
-            $.post("/Home/Add", { userName: name }, function () {
-                console.log(11111)
-            });
-
-        }
-    </script>
 }

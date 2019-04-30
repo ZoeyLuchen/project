@@ -30,24 +30,26 @@ namespace MaiDongXi.Controllers
         /// <param name="account"></param>
         /// <param name="pwd"></param>
         /// <returns></returns>
-        public IActionResult Login(string account, string pwd)
+        [HttpGet]
+        public IActionResult Login(string passWord,string account)
         {
-            if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(pwd))
+
+            if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(passWord))
             {
                 return JsonError("用户名或密码为空");
             }
-            pwd = Md5Helper.MD5Encrypt(pwd, 32);
-            var userInfo = _userInfoRepository.GetSingle(e => e.Account == account && e.PassWord == pwd && e.IsDel == false);
+            passWord = Md5Helper.MD5Encrypt(passWord, 32);
+            var userInfo = _userInfoRepository.GetSingle(e => e.Account == account && e.PassWord == passWord && e.IsDel == 0);
 
             if (userInfo != null)
             {
                 //记录Session
                 HttpContext.Session.Set("CurrentUser", ByteConvertHelper.Object2Bytes(userInfo));
-                return JsonOk("", "用户名或密码为空");
+                return JsonOk("", "登录成功");
             }
             else
             {
-                return Json("用户名或密码错误");
+                return JsonError("用户名或密码错误");
             }
         }
     }

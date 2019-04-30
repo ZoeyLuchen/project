@@ -4,14 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MaiDongXi</title>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/element-ui-2.4.0/css/index.css" />
+        <link rel="stylesheet" href="~/css/login.css" />
+    </environment>
 </head>
 <body>
-    @RenderBody()
 
+
+    @RenderBody()
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="~/lib/vue-v2.6.8.min.js"></script>
+        <script type="text/javascript" src="~/lib/axios.min.js"></script>
+        <script type="text/javascript" src="~/lib/element-ui-2.4.0/index.js"></script>
+        <script type="text/javascript" src="~/js/qs.js"></script>
     </environment>
     @RenderSection("Scripts", required: false)
 </body>

@@ -27,6 +27,6 @@ namespace MaiDongXi.Entity
         /// <summary>
         /// 是否删除
         /// </summary>
-        public bool IsDel { get; set; }
+        public int IsDel { get; set; }
     }
 }

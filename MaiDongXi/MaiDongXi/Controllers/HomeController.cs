@@ -20,17 +20,7 @@ namespace MaiDongXi.Controllers
 
         public IActionResult Index()
         {
-            var list = _userInfoRepository.GetAll().ToList();
-            ViewBag.UserList = list;
             return View();
-        }
-
-        public IActionResult Add(UserInfo model)
-        {
-            _userInfoRepository.Add(model);
-            _userInfoRepository.Commit();
-
-            return Json("");
         }
     }
 }
