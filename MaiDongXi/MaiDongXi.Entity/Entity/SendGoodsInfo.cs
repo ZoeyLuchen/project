@@ -34,5 +34,10 @@ namespace MaiDongXi.Entity
         /// 备注
         /// </summary>
         public string Remarks { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
     }
 }

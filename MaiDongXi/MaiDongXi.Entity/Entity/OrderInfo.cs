@@ -22,7 +22,7 @@ namespace MaiDongXi.Entity
         /// <summary>
         /// 省 Code
         /// </summary>
-        public int ProvinceCode { get; set; }
+        public string ProvinceCode { get; set; }
 
         /// <summary>
         /// 省名
@@ -32,7 +32,7 @@ namespace MaiDongXi.Entity
         /// <summary>
         /// 市Code
         /// </summary>
-        public int CityCode { get; set; }
+        public string CityCode { get; set; }
 
         /// <summary>
         /// 市名称
@@ -42,7 +42,7 @@ namespace MaiDongXi.Entity
         /// <summary>
         /// 县Code
         /// </summary>
-        public int CountyCode { get; set; }
+        public string CountyCode { get; set; }
 
         /// <summary>
         /// 县名
@@ -92,7 +92,7 @@ namespace MaiDongXi.Entity
         /// <summary>
         /// 是否删除
         /// </summary>
-        public bool IsDel { get; set; }
+        public int IsDel { get; set; }
 
         /// <summary>
         /// 创建时间
