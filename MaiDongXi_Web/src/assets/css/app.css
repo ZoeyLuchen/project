@@ -1,0 +1,123 @@
+/* .intro {
+  padding: 5px;
+}
+.intro .el-button {
+  display: block;
+  width: 100%;
+}
+.intro .el-button {
+  background-color: #f92064;
+  border-color: #f92064;
+}
+.intro .btn-box {
+  padding: 5px;
+}
+.intro .price span {
+
+} */
+.intro {
+  padding: 5px;
+  line-height: 0.4rem;
+}
+
+.intro p {
+  margin-bottom: 5px;
+}
+
+.intro .btn-box {
+  padding: 5px;
+}
+
+.intro .desc {
+  color: #666;
+  font-weight: 700;
+}
+
+.intro .desc span {
+  padding: 2px;
+  background-color: #fc0705;
+  color: #fff;
+  border-radius: 25%;
+  font-size: 0.28rem;
+}
+
+.intro .red-box {
+  text-align: center;
+  color: #e60000;
+}
+
+.intro .xinshan {
+  text-align: center;
+  color: #666;
+  font-weight: bold;
+}
+
+.form-title {
+  line-height: 50px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.form {
+  padding: 20px;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+
+.form .el-select {
+  display: block;
+}
+
+.form .el-radio-group {
+  border-bottom: 1px solid #edeef5;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.form .el-radio-group .el-radio {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form .info {
+  border-bottom: 1px solid #edeef5;
+  margin-bottom: 10px;
+}
+
+.form .info p {
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.form .count {
+  padding: 10px 0;
+  border-bottom: 1px solid #edeef5;
+  margin-bottom: 10px;
+}
+
+.form .count .el-input-number--mini {
+  width: 100px;
+}
+
+.form .count .d-fl {
+  margin-top: 10px;
+}
+
+.form .count .fl-1 {
+  text-align: right;
+}
+
+.footer {
+  padding: 10px;
+  text-align: center;
+}
+
+.footer .el-button {
+  margin-bottom: 10px;
+}
+
+.footer p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}

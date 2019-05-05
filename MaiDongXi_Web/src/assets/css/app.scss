@@ -1,0 +1,115 @@
+/* .intro {
+  padding: 5px;
+}
+.intro .el-button {
+  display: block;
+  width: 100%;
+}
+.intro .el-button {
+  background-color: #f92064;
+  border-color: #f92064;
+}
+.intro .btn-box {
+  padding: 5px;
+}
+.intro .price span {
+
+} */
+.intro {
+  padding: 5px;
+  line-height: 0.4rem;
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  .btn-box {
+    padding: 5px;
+  }
+
+  .desc {
+    color: #666;
+    font-weight: 700;
+
+    span {
+      padding: 2px;
+      background-color: #fc0705;
+      color: #fff;
+      border-radius: 25%;
+      font-size: 0.28rem;
+    }
+  }
+
+  .red-box {
+    text-align: center;
+    color: #e60000;
+  }
+
+  .xinshan {
+    text-align: center;
+    color: #666;
+    font-weight: bold;
+  }
+}
+
+.form-title {
+  line-height: 50px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.form {
+  padding: 20px;
+  background-color: #f5f5f5;
+  overflow: hidden;
+  .el-select {
+    display: block;
+  }
+  .el-radio-group {
+    border-bottom: 1px solid #edeef5;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .el-radio-group .el-radio {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .info {
+    border-bottom: 1px solid #edeef5;
+    margin-bottom: 10px;
+
+    p {
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+  }
+  .count {
+    padding: 10px 0;
+    border-bottom: 1px solid #edeef5;
+    margin-bottom: 10px;
+    .el-input-number--mini {
+      width: 100px;
+    }
+    .d-fl {
+      margin-top: 10px;
+    }
+    .fl-1 {
+      text-align: right;
+    }
+  }
+}
+
+.footer {
+  padding: 10px;
+  text-align: center;
+  .el-button {
+    margin-bottom: 10px;
+  }
+  p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+}
