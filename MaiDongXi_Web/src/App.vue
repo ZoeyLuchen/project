@@ -92,11 +92,11 @@
     </div>
     <div class="form">
       <el-form ref="form" :model="form" label-width="auto" :rules="rules">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="超值装：300ml款+400ml款【仅158元】"></el-radio>
-          <el-radio label="特惠装：300ml款1个【仅99元】"></el-radio>
-          <el-radio label="尊享装：400ml款1个【仅108元】"></el-radio>
-        </el-radio-group>
+        <!-- <el-radio-group  @change="ddd"> -->
+          <el-radio  :value="form.goodsId" name ="goodsRadio" :key="index" v-for="(item,index) in goodsList" :label="item.id">
+            {{item.specificationDesc}} 【仅 {{item.price}} 元】
+          </el-radio>
+        <!-- </el-radio-group> -->
         <div class="info">
           <p class="intro">送大红袍（1罐）+杯套（1个）+备用密封圈（2个）</p>
           <p class="intro">典雅尊贵，双向双层，茶水分离，防爆耐摔</p>
@@ -107,38 +107,40 @@
           </p>
           <div class="d-fl">
             <el-input-number
-              v-model="form.inputCount"
-              size="mini"
-              @change="handleChange"
+              v-model="form.buyQuantity"
+              size="mini"              
               :min="1"
               :max="10"
               label="描述文字"
             ></el-input-number>
             <p class="fl-1">
               商品金额：
-              <span class="red">¥ 108</span>
+              <span class="red">¥ {{getSumPrice}}</span>
             </p>
           </div>
         </div>
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item label="姓名" prop="consignee">
+          <el-input v-model="form.consignee"></el-input>
         </el-form-item>
         <el-form-item label="手机" prop="phone">
           <el-input v-model="form.phone" type="number"></el-input>
         </el-form-item>
-        <el-form-item label="地区" prop="phone">
+        <el-form-item label="地区" prop="area">
           <el-cascader 
             v-model="form.selectArea"
             :props = "{value:'code',label:'name',children:'children'}"
-            :options= "from.cityList"
+            :options= "cityList"
             placeholder="请选择活动区域">
           </el-cascader>
         </el-form-item>
-        <el-form-item label="付款" prop="phone">
-          <el-switch v-model="form.delivery" active-text="验货满意后付款"></el-switch>
+        <el-form-item label="付款">
+          <el-switch v-model="form.payType" active-text="验货满意后付款"></el-switch>
         </el-form-item>
-        <el-form-item label="留言">
-          <el-input v-model="form.phone" type="textarea"></el-input>
+        <el-form-item label="详细地址" prop="detailedAddress">
+          <el-input v-model="form.detailedAddress"></el-input>
+        </el-form-item>
+        <el-form-item label="留言" prop="message">
+          <el-input v-model="form.message" type="textarea"></el-input>
         </el-form-item>
         <div class="remen">
           <el-checkbox label="记录收货地址，下次购买自动输入" name="type"></el-checkbox>
@@ -146,7 +148,7 @@
       </el-form>
     </div>
     <div class="footer">
-      <el-button type="danger">提交订单</el-button>
+      <el-button type="danger" @click='submitOrder'>提交订单</el-button>
       <p>此页面商品或服务由厦门云盯电子商务有限公司提供</p>
       <p>85494c95.fyeds8.com仅提供技术支持</p>
     </div>
@@ -154,21 +156,32 @@
 </template>
 <script>
 import cityList from "./assets/js/city_code.js"
+import axios from 'axios';
+import _ from 'lodash';
+console.log(cityList);
 export default {
   name: "app",
   data() {
     return {
-      form: {
-        cityList:cityList,
-        resource: "超值装：300ml款+400ml款【仅158元】",
-        inputCount: 1,
-        name: "",
-        phone: "",
+      form: {        
+        goodsId: 2,
+        buyQuantity: 1,
+        consignee: "",
+        phone:"",
+        detailedAddress:"",
+        message:"",        
+        payType:3,
         selectArea: [],
         delivery: true
       },
+      cityList:cityList.cityList,
+      goodsList:[
+        {id:1,specificationDesc:"超值装：300ml款+400ml款",price:158},
+        {id:2,specificationDesc:"特惠装：300ml款1个",price:99},
+        {id:3,specificationDesc:"尊享装：400ml款1个",price:108}
+      ],
       rules: {
-        name: [
+        consignee: [
           {
             required: true,
             message: "请输入姓名",
@@ -188,13 +201,49 @@ export default {
             message: "请选择所属地区",
             trigger: "change"
           }
+        ],
+        detailedAddress:[
+          {
+            required: true,
+            message: "请输入详细地址",
+            trigger: "change"
+          }
         ]
       }
     };
   },
   methods: {
-    handleChange(value) {
-      this.form.inputCount = value;
+    ddd(a,b){
+      console.log(a);
+      console.log(b);
+    },
+    submitOrder(){
+      var provinceCode = this.form.selectArea[0];
+      var cityCode = this.form.selectArea[1];
+      var countyCode = this.form.selectArea[2];
+
+      var provinceModel =  _.find(cityList,e=>{return e.code == provinceCode});
+      var cityModel = _.find(provinceModel.children,e=>{return e.code == cityCode});
+      var countyModel = _.find(cityModel.children,e=>{return e.code == countyCode});
+
+      this.form.provinceCode = provinceCode;
+      this.form.cityCode = cityCode;
+      this.form.countyCode = countyCode;
+      this.form.provinceName = provinceModel.name;
+      this.form.cityName = cityModel.name;
+      this.form.countyName = countyModel.name;
+
+      this.from.orderAmount = getSumPrice();
+
+      axios.post("http://maidongxi.xyz/api/orders/add",this.form).then(e=>{
+        console.log(e);
+      });
+    }
+  },
+  computed:{
+    getSumPrice(){
+      var price = _.find(this.goodsList,e=>{return e.id = this.form.goodsId}).price;      
+      return price * this.form.buyQuantity
     }
   }
 };

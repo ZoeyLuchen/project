@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaiDongXi.Repository", "Mai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaiDongXi.Entity", "MaiDongXi.Entity\MaiDongXi.Entity.csproj", "{E5015309-74EF-431C-BC85-AF1973731FE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaiDongXi.Common", "MaiDongXi.Common\MaiDongXi.Common.csproj", "{7806A527-C340-45CF-8CEC-34021C4B4B39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaiDongXi.Common", "MaiDongXi.Common\MaiDongXi.Common.csproj", "{7806A527-C340-45CF-8CEC-34021C4B4B39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
