@@ -36,15 +36,26 @@ namespace MaiDongXi
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<MDXDbContext>(o=>o.UseMySQL(Configuration.GetConnectionString("SqlServerConnection")));
+            services.AddDbContext<MDXDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("SqlServerConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSession();
+
+            #region 跨域
+            //var urls = Configuration["AppConfig:Cores"].Split(',');
+            var urls = new string[] { "http://www.maidongxi.xyz/"};
+            services.AddCors(options =>
+            options.AddPolicy("AllowSameDomain",
+                 builder => builder.WithOrigins(urls).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials())
+             );
+
+            #endregion
 
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<AutoFacModule>();
             containerBuilder.RegisterAssemblyTypes(this.GetType().GetTypeInfo().Assembly).PropertiesAutowired();
             containerBuilder.Populate(services);
             var container = containerBuilder.Build();
+
             return new AutofacServiceProvider(container);
         }
 

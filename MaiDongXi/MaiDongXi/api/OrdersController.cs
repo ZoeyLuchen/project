@@ -6,18 +6,30 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MaiDongXi.IRepository;
 using MaiDongXi.Entity;
-
+using Microsoft.AspNetCore.Cors;
 
 namespace MaiDongXi.api
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSameDomain")]
     public class OrdersController : ControllerBase
     {
         IOrderInfoRepository _orderInfoRepository;
         public OrdersController(IOrderInfoRepository orderInfoRepository)
         {
             _orderInfoRepository = orderInfoRepository;
+        }
+
+        /// <summary>
+        /// 添加订单
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("Index")]
+        public ActionResult<IEnumerable<string>> Index()
+        {
+            return new string[] { "aaa" };
         }
 
         /// <summary>
@@ -39,7 +51,7 @@ namespace MaiDongXi.api
 
                 return Ok();
             }
-            catch (Exception )
+            catch (Exception ex)
             {
                 Response.StatusCode = 500;
                 return null;

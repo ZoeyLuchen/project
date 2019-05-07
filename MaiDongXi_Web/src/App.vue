@@ -93,7 +93,7 @@
     <div class="form">
       <el-form ref="form" :model="form" label-width="auto" :rules="rules">
         <!-- <el-radio-group  @change="ddd"> -->
-          <el-radio  :value="form.goodsId" name ="goodsRadio" :key="index" v-for="(item,index) in goodsList" :label="item.id">
+          <el-radio v-model="form.goodsId" name ="goodsRadio" :key="index" v-for="(item,index) in goodsList" :label="item.id">
             {{item.specificationDesc}} 【仅 {{item.price}} 元】
           </el-radio>
         <!-- </el-radio-group> -->
@@ -125,7 +125,7 @@
         <el-form-item label="手机" prop="phone">
           <el-input v-model="form.phone" type="number"></el-input>
         </el-form-item>
-        <el-form-item label="地区" prop="area">
+        <el-form-item label="地区" prop="selectArea">
           <el-cascader 
             v-model="form.selectArea"
             :props = "{value:'code',label:'name',children:'children'}"
@@ -134,7 +134,7 @@
           </el-cascader>
         </el-form-item>
         <el-form-item label="付款">
-          <el-switch v-model="form.payType" active-text="验货满意后付款"></el-switch>
+          <el-switch  active-text="验货满意后付款"></el-switch>
         </el-form-item>
         <el-form-item label="详细地址" prop="detailedAddress">
           <el-input v-model="form.detailedAddress"></el-input>
@@ -171,8 +171,7 @@ export default {
         detailedAddress:"",
         message:"",        
         payType:3,
-        selectArea: [],
-        delivery: true
+        selectArea: []
       },
       cityList:cityList.cityList,
       goodsList:[
@@ -195,7 +194,7 @@ export default {
             trigger: "blur"
           }
         ],
-        area: [
+        selectArea: [
           {
             required: true,
             message: "请选择所属地区",
@@ -222,7 +221,7 @@ export default {
       var cityCode = this.form.selectArea[1];
       var countyCode = this.form.selectArea[2];
 
-      var provinceModel =  _.find(cityList,e=>{return e.code == provinceCode});
+      var provinceModel =  _.find(cityList.cityList,e=>{return e.code == provinceCode});
       var cityModel = _.find(provinceModel.children,e=>{return e.code == cityCode});
       var countyModel = _.find(cityModel.children,e=>{return e.code == countyCode});
 
@@ -233,9 +232,13 @@ export default {
       this.form.cityName = cityModel.name;
       this.form.countyName = countyModel.name;
 
-      this.from.orderAmount = getSumPrice();
+      this.form.orderAmount = this.getSumPrice;
 
-      axios.post("http://maidongxi.xyz/api/orders/add",this.form).then(e=>{
+axios.post("http://www.maidongxi.xyz/api/orders/index").then(e=>{
+        console.log(e);
+      });
+
+      axios.post("http://www.maidongxi.xyz/api/orders/add",this.form).then(e=>{
         console.log(e);
       });
     }
