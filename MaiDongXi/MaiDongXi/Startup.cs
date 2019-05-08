@@ -42,7 +42,7 @@ namespace MaiDongXi
 
             #region 跨域
             //var urls = Configuration["AppConfig:Cores"].Split(',');
-            var urls = new string[] { "http://www.maidongxi.xyz/"};
+            var urls = new string[] { "http://www.maidongxi.xyz/", "https://www.maidongxi.xyz/"};
             services.AddCors(options =>
             options.AddPolicy("AllowSameDomain",
                  builder => builder.WithOrigins(urls).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials())

@@ -20,5 +20,10 @@ namespace MaiDongXi.Entity
         /// 收货人电话
         /// </summary>
         public string Phone { get; set; }
+
+        public DateTime? BeginTime { get; set; }
+
+
+        public DateTime? EndTime { get; set; }
     }
 }

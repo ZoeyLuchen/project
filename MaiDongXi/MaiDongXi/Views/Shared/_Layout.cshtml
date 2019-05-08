@@ -1,19 +1,81 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">
+    <meta name="format-detection" content="telephone=notelphone=no, email=no" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <meta name="apple-touch-fullscreen" content="yes" /><!-- 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!-- 设置苹果工具栏颜色:默认值为 default，可以定为 black和 black-translucent-->
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><!-- 不让百度转码 -->
+    <meta name="HandheldFriendly" content="true"><!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="MobileOptimized" content="320"><!-- 微软的老式浏览器 -->
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <meta name="browsermode" content="application"><!-- UC应用模式 -->
+    <meta name="x5-page-mode" content="app"><!-- QQ应用模式 -->
+    <meta name="msapplication-tap-highlight" content="no"><!-- windows phone 点击无高光 -->
+    <meta name="apple-mobile-web-app-capable" content="yes"><!-- ios 开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- ios 改变顶部状态条的颜色 -->
     <title>@ViewData["Title"] - MaiDongXi</title>
-    <link rel="stylesheet" href="~/lib/element-ui-2.4.0/css/index.css" />
-    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("Css", required: false)
 </head>
 <body>
-    @RenderBody()
+    <el-container>
+        <el-header id="headerApp" style="background-color:#fff; margin:0px 60px">
+            <el-row>
+                <el-col :span="20">
+                    <el-menu :default-active="activeIndex"
+                             class="el-menu-demo"
+                             mode="horizontal"
+                             v-on:select="handleSelect">
+                        <el-menu-item index="1">处理中心</el-menu-item>
+                        <el-menu-item index="2"><a href="/OrderInfo/ManageIndex">订单管理</a></el-menu-item>
+                        <el-submenu index="3">
+                            <template slot="title">
+                                统计分析
+                            </template>
+                            <el-menu-item index="2-1">统计分析1</el-menu-item>
+                            <el-menu-item index="2-2">统计分析2</el-menu-item>
+                            <el-menu-item index="2-3">统计分析3</el-menu-item>
+                        </el-submenu>
+                    </el-menu>
+                </el-col>
+                <el-col :span="4" style="text-align:center;    border-bottom: solid 1px #e6e6e6;height:61px">
+                    <span>退出登录</span>
+                </el-col>
+            </el-row>
+        </el-header>
+        <div style="margin:0px 60px;padding: 30px 30px;">
+            @RenderBody()
+        </div>
+    </el-container>
+
     <script type="text/javascript" src="~/lib/vue-v2.6.8.min.js"></script>
     <script type="text/javascript" src="~/lib/axios.min.js"></script>
-    <script type="text/javascript" src="~/lib/element-ui-2.4.0/index.js"></script>
+    <script type="text/javascript" src="~/js/site.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script type="text/javascript" src="~/js/qs.js"></script>
+    <script type="text/javascript">
+        var headerApp = new Vue({
+            el: "#headerApp",
+            data: {
+                activeIndex: '1'
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+
+                });
+            },
+            methods: {
+                handleSelect: function () { }
+            }
+        })
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

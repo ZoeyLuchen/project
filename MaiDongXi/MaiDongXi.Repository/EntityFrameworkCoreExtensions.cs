@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MaiDongXi.Entity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,15 @@ namespace MaiDongXi.Repository
             return dt.ToList<T>();
         }
 
+        public static object ExcuteSclare(this DatabaseFacade facade, string sql, params object[] parameters)
+        {
+            var command = CreateCommand(facade, sql, out DbConnection conn, parameters);
+            var obj = command.ExecuteScalar();
+            var dt = new DataTable();            
+            conn.Close();
+            return obj;
+        }
+
         public static List<T> ToList<T>(this DataTable dt) where T : class, new()
         {
             var propertyInfos = typeof(T).GetProperties();
@@ -54,6 +64,12 @@ namespace MaiDongXi.Repository
                 list.Add(t);
             }
             return list;
+        }
+
+        public static string ToPaginationSql(this string sql, PageInfo pageInfo)
+        {
+            var newSql = sql + $" limit {(pageInfo.PageIndex-1)*pageInfo.PageSize},{pageInfo.PageSize} ";
+            return newSql;
         }
     }
 }
