@@ -7,6 +7,10 @@ namespace MaiDongXi.Entity
     public class OrderInfoView
     {
         /// <summary>
+        /// 订单Id
+        /// </summary>
+        public int OrderId { get; set; }
+        /// <summary>
         /// 订单编号
         /// </summary>
         public string OrderNo { get; set; }
@@ -55,5 +59,20 @@ namespace MaiDongXi.Entity
         /// 规格描述
         /// </summary>
         public string SpecificationDesc { get; set; }
+
+        /// <summary>
+        /// 快递单号
+        /// </summary>
+        public string TrackingNo { get; set; }
+
+        /// <summary>
+        /// 快递公司
+        /// </summary>
+        public string CourierCompany { get; set; }
+
+        /// <summary>
+        /// 发货备注
+        /// </summary>
+        public string Remarks { get; set; }
     }
 }

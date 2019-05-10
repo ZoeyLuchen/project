@@ -46,10 +46,12 @@ namespace MaiDongXi.Repository.Repository
                 sqlParam.Add(new MySqlParameter("@EndTime", param.EndTime));
             }
 
-            string sql = @"select o.OrderNo, CONCAT(o.ProvinceName,o.CityName,o.CountyName, ' ',o.DetailedAddress) Address,
-                            o.Consignee,o.Phone,o.BuyQuantity,o.Message,o.OrderAmount,o.Status,o.CreateTime,g.SpecificationDesc
+            string sql = @"select o.id as OrderId, o.OrderNo, CONCAT(o.ProvinceName,o.CityName,o.CountyName, ' ',o.DetailedAddress) Address,
+                            o.Consignee,o.Phone,o.BuyQuantity,o.Message,o.OrderAmount,o.Status,o.CreateTime,g.SpecificationDesc,
+                            sg.TrackingNo,sg.CourierCompany,sg.Remarks
                             from orderinfo o
-                            LEFT JOIN goodsinfo g on o.GoodsId = g.Id" + sqlWhere;
+                            LEFT JOIN goodsinfo g on o.GoodsId = g.Id
+                            LEFT JOIN SendGoodsInfo sg on o.id = sg.OrderId " + sqlWhere;
             string sqlCount = "select count(*) from OrderInfo o "+ sqlWhere;
 
             var list = _context.Database.SqlQuery<OrderInfoView>(sql.ToPaginationSql(pageInfo), sqlParam.ToArray());

@@ -95,15 +95,16 @@ namespace MaiDongXi.Controllers
         /// 发货
         /// </summary>
         /// <returns></returns>
-        public IActionResult SendGoods(int id,SendGoodsInfo sendGoods)
+        [HttpPost]
+        public IActionResult SendGoods([FromBody]SendGoodsInfo sendGoods)
         {
             try
             {
-                var orderModel = _orderInfoRepository.GetSingle(id);
+                var orderModel = _orderInfoRepository.GetSingle(sendGoods.OrderId);
                 orderModel.Status = (int)OrderStatusEnum.已发货;
                 _orderInfoRepository.Update(orderModel);
 
-                sendGoods.OrderId = id;
+                sendGoods.CreateTime = DateTime.Now;
                 _sendGoodsInfoRepository.Add(sendGoods);
 
                 _orderInfoRepository.Commit();
