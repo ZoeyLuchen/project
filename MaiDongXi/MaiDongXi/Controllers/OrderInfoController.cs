@@ -75,12 +75,12 @@ namespace MaiDongXi.Controllers
         /// <param name="Id"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public IActionResult ChangeStatus(int id, int status)
+        public IActionResult ChangeStatus([FromBody]OrderInfo oldModel)
         {
             try
             {
-                var orderModel = _orderInfoRepository.GetSingle(id);
-                orderModel.Status = status;
+                var orderModel = _orderInfoRepository.GetSingle(oldModel.Id);
+                orderModel.Status = oldModel.Status;
                 _orderInfoRepository.Update(orderModel);
                 _orderInfoRepository.Commit();
                 return JsonOk("", "操作成功");
