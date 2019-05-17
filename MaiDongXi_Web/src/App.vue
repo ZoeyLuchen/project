@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/images/1.jpg" alt>
+    <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/1.jpg" alt>
     <div class="intro">
       <p class="price red">
         <span>¥</span> 158.00
@@ -34,69 +34,71 @@
       <p class="xinshan">▽请欣赏这款典雅尊贵的茶水分离泡茶杯</p>
     </div>
     <div class="video-box">
-      <video src="./assets/images/0.mp4"></video>
+      <video src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/0.mp4"></video>
     </div>
     <div class="img-box">
-      <img src="./assets/images/2.jpg" alt>
-      <img src="./assets/images/3.jpg" alt>
-      <img src="./assets/images/4.jpg" alt>
-      <img src="./assets/images/5.jpg" alt>
-      <img src="./assets/images/6.gif" alt>
-      <img src="./assets/images/7.jpg" alt>
-      <img src="./assets/images/8.gif" alt>
-      <img src="./assets/images/9.jpg" alt>
-      <img src="./assets/images/10.gif" alt>
-      <img src="./assets/images/11.jpg" alt>
-      <img src="./assets/images/12.gif" alt>
-      <img src="./assets/images/13.jpg" alt>
-      <img src="./assets/images/14.gif" alt>
-      <img src="./assets/images/15.jpg" alt>
-      <img src="./assets/images/16.gif" alt>
-      <img src="./assets/images/17.jpg" alt>
-      <img src="./assets/images/18.jpg" alt>
-      <img src="./assets/images/19.jpg" alt>
-      <img src="./assets/images/20.jpg" alt>
-      <img src="./assets/images/21.jpg" alt>
-      <img src="./assets/images/22.jpg" alt>
-      <img src="./assets/images/23.jpg" alt>
-      <img src="./assets/images/24.jpg" alt>
-      <img src="./assets/images/25.jpg" alt>
-      <img src="./assets/images/26.jpg" alt>
-      <img src="./assets/images/27.jpg" alt>
-      <img src="./assets/images/28.jpg" alt>
-      <img src="./assets/images/29.jpg" alt>
-      <img src="./assets/images/30.jpg" alt>
-      <img src="./assets/images/31.jpg" alt>
-      <img src="./assets/images/32.jpg" alt>
-      <img src="./assets/images/33.jpg" alt>
-      <img src="./assets/images/34.jpg" alt>
-      <img src="./assets/images/35.jpg" alt>
-      <img src="./assets/images/36.jpg" alt>
-      <img src="./assets/images/37.jpg" alt>
-      <img src="./assets/images/38.jpg" alt>
-      <img src="./assets/images/39.jpg" alt>
-      <img src="./assets/images/40.jpg" alt>
-      <img src="./assets/images/41.jpg" alt>
-      <img src="./assets/images/42.jpg" alt>
-      <img src="./assets/images/43.jpg" alt>
-      <img src="./assets/images/44.jpg" alt>
-      <img src="./assets/images/45.jpg" alt>
-      <img src="./assets/images/46.jpg" alt>
-      <img src="./assets/images/47.jpg" alt>
-      <img src="./assets/images/48.jpg" alt>
-      <img src="./assets/images/49.jpg" alt>
-      <img src="./assets/images/50.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/2.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/3.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/4.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/5.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/6.gif" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/7.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/8.gif" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/9.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/10.gif" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/11.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/12.gif" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/13.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/14.gif" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/15.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/16.gif" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/17.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/18.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/19.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/20.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/21.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/22.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/23.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/24.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/25.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/26.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/27.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/28.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/29.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/30.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/31.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/32.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/33.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/34.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/35.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/36.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/37.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/38.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/39.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/40.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/41.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/42.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/43.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/44.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/45.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/46.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/47.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/48.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/49.jpg" alt>
+      <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/50.jpg" alt>
     </div>
     <div class="form-title">
       <p>填写订单</p>
     </div>
     <div class="form">
       <el-form ref="form" :model="form" label-width="auto" :rules="rules">
-        <!-- <el-radio-group  @change="ddd"> -->
-          <el-radio v-model="form.goodsId" name ="goodsRadio" :key="index" v-for="(item,index) in goodsList" :label="item.id">
-            {{item.specificationDesc}} 【仅 {{item.price}} 元】
-          </el-radio>
-        <!-- </el-radio-group> -->
+        <el-radio
+          v-model="form.goodsId"
+          name="goodsRadio"
+          v-for="item in goodsList"
+          :key="item.id"
+          :label="item.id"
+        >{{item.specificationDesc}} 【仅 {{item.price}} 元】</el-radio>
         <div class="info">
           <p class="intro">送大红袍（1罐）+杯套（1个）+备用密封圈（2个）</p>
           <p class="intro">典雅尊贵，双向双层，茶水分离，防爆耐摔</p>
@@ -108,9 +110,9 @@
           <div class="d-fl">
             <el-input-number
               v-model="form.buyQuantity"
-              size="mini"              
+              size="mini"
               :min="1"
-              :max="10"
+              :max="100"
               label="描述文字"
             ></el-input-number>
             <p class="fl-1">
@@ -126,15 +128,15 @@
           <el-input v-model="form.phone" type="number"></el-input>
         </el-form-item>
         <el-form-item label="地区" prop="selectArea">
-          <el-cascader 
+          <el-cascader
             v-model="form.selectArea"
-            :props = "{value:'code',label:'name',children:'children'}"
-            :options= "cityList"
-            placeholder="请选择活动区域">
-          </el-cascader>
+            :props="{value:'code',label:'name',children:'children'}"
+            :options="cityList"
+            placeholder="请选择活动区域"
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="付款">
-          <el-switch  active-text="验货满意后付款"></el-switch>
+          <el-switch v-model="aaa" disabled active-text="验货满意后付款"></el-switch>
         </el-form-item>
         <el-form-item label="详细地址" prop="detailedAddress">
           <el-input v-model="form.detailedAddress"></el-input>
@@ -148,36 +150,37 @@
       </el-form>
     </div>
     <div class="footer">
-      <el-button type="danger" @click='submitOrder'>提交订单</el-button>
+      <el-button type="danger" @click="submitOrder('form')">提交订单</el-button>
       <p>此页面商品或服务由厦门云盯电子商务有限公司提供</p>
       <p>85494c95.fyeds8.com仅提供技术支持</p>
     </div>
   </div>
 </template>
 <script>
-import cityList from "./assets/js/city_code.js"
-import axios from 'axios';
-import _ from 'lodash';
+import cityList from "./assets/js/city_code.js";
+import axios from "axios";
+import _ from "lodash";
 console.log(cityList);
 export default {
   name: "app",
   data() {
     return {
-      form: {        
-        goodsId: 2,
+      form: {
+        goodsId: 1,
         buyQuantity: 1,
         consignee: "",
-        phone:"",
-        detailedAddress:"",
-        message:"",        
-        payType:3,
+        phone: "",
+        detailedAddress: "",
+        message: "",
+        payType: 3,
         selectArea: []
       },
-      cityList:cityList.cityList,
-      goodsList:[
-        {id:1,specificationDesc:"超值装：300ml款+400ml款",price:158},
-        {id:2,specificationDesc:"特惠装：300ml款1个",price:99},
-        {id:3,specificationDesc:"尊享装：400ml款1个",price:108}
+      aaa:true,
+      cityList: cityList.cityList,
+      goodsList: [
+        { id: 1, specificationDesc: "超值装：300ml款+400ml款", price: 158 },
+        { id: 2, specificationDesc: "特惠装：300ml款1个", price: 99 },
+        { id: 3, specificationDesc: "尊享装：400ml款1个", price: 108 }
       ],
       rules: {
         consignee: [
@@ -192,6 +195,11 @@ export default {
             required: true,
             message: "请输入手机号",
             trigger: "blur"
+          },
+          {
+            pattern: /^1\d{10}$/,
+            message: "请输入正确的手机号码",
+            trigger: "blur"
           }
         ],
         selectArea: [
@@ -201,7 +209,7 @@ export default {
             trigger: "change"
           }
         ],
-        detailedAddress:[
+        detailedAddress: [
           {
             required: true,
             message: "请输入详细地址",
@@ -212,41 +220,61 @@ export default {
     };
   },
   methods: {
-    ddd(a,b){
+    ddd(a, b) {
       console.log(a);
       console.log(b);
     },
-    submitOrder(){
-      var provinceCode = this.form.selectArea[0];
-      var cityCode = this.form.selectArea[1];
-      var countyCode = this.form.selectArea[2];
+    submitOrder(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          var provinceCode = this.form.selectArea[0];
+          var cityCode = this.form.selectArea[1];
+          var countyCode = this.form.selectArea[2];
 
-      var provinceModel =  _.find(cityList.cityList,e=>{return e.code == provinceCode});
-      var cityModel = _.find(provinceModel.children,e=>{return e.code == cityCode});
-      var countyModel = _.find(cityModel.children,e=>{return e.code == countyCode});
+          var provinceModel = _.find(cityList.cityList, e => {
+            return e.code == provinceCode;
+          });
+          var cityModel = _.find(provinceModel.children, e => {
+            return e.code == cityCode;
+          });
+          var countyModel = _.find(cityModel.children, e => {
+            return e.code == countyCode;
+          });
 
-      this.form.provinceCode = provinceCode;
-      this.form.cityCode = cityCode;
-      this.form.countyCode = countyCode;
-      this.form.provinceName = provinceModel.name;
-      this.form.cityName = cityModel.name;
-      this.form.countyName = countyModel.name;
+          this.form.provinceCode = provinceCode;
+          this.form.cityCode = cityCode;
+          this.form.countyCode = countyCode;
+          this.form.provinceName = provinceModel.name;
+          this.form.cityName = cityModel.name;
+          this.form.countyName = countyModel.name;
 
-      this.form.orderAmount = this.getSumPrice;
+          this.form.orderAmount = this.getSumPrice;
 
-axios.post("http://www.maidongxi.xyz/api/orders/index").then(e=>{
-        console.log(e);
-      });
-
-      axios.post("http://www.maidongxi.xyz/api/orders/add",this.form).then(e=>{
-        console.log(e);
+          axios
+            .post("https://www.maidongxi.xyz/api/orders/add", this.form)
+            .then(e => {
+              if (e.status == 200) {
+                this.$message({
+                  type: "success",
+                  message: "下单成功，祝君愉快度过每一天"
+                });
+              }else{
+                this.$message({
+                  type: "error",
+                  message: "下单失败"
+                });
+              }
+            });
+        }
       });
     }
   },
-  computed:{
-    getSumPrice(){
-      var price = _.find(this.goodsList,e=>{return e.id = this.form.goodsId}).price;      
-      return price * this.form.buyQuantity
+  computed: {
+    getSumPrice() {
+      var price = _.find(this.goodsList, e => {
+        return e.id == this.form.goodsId;
+      }).price;
+      return price * this.form.buyQuantity;
     }
   }
 };

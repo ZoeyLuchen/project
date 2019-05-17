@@ -50,26 +50,6 @@ namespace MaiDongXi.Controllers
         }
 
         /// <summary>
-        /// 添加订单
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public IActionResult Add(OrderInfo model)
-        {
-            try
-            {
-                _orderInfoRepository.Add(model);
-                _orderInfoRepository.Commit();
-
-                return JsonOk("", "下单成功,请等待收货");
-            }
-            catch (Exception)
-            {
-                return JsonError("下单失败");
-            }
-        }
-
-        /// <summary>
         /// 修改订单状态
         /// </summary>
         /// <param name="Id"></param>

@@ -10,7 +10,7 @@ using MaiDongXi.Entity;
 
 namespace MaiDongXi.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         IUserInfoRepository _userInfoRepository;
 

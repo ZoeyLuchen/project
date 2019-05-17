@@ -51,7 +51,7 @@ namespace MaiDongXi.Repository.Repository
                             sg.TrackingNo,sg.CourierCompany,sg.Remarks
                             from orderinfo o
                             LEFT JOIN goodsinfo g on o.GoodsId = g.Id
-                            LEFT JOIN SendGoodsInfo sg on o.id = sg.OrderId " + sqlWhere;
+                            LEFT JOIN SendGoodsInfo sg on o.id = sg.OrderId " + sqlWhere + " order by o.createTime ";
             string sqlCount = "select count(*) from OrderInfo o "+ sqlWhere;
 
             var list = _context.Database.SqlQuery<OrderInfoView>(sql.ToPaginationSql(pageInfo), sqlParam.ToArray());

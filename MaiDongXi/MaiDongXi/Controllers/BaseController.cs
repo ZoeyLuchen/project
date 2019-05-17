@@ -2,24 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MaiDongXi.Common;
+using MaiDongXi.Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MaiDongXi.Controllers
 {
     //[UserAuthorize]
     public class BaseController : Controller
     {
-        //public BaseController()
-        //{
-        //    try
-        //    {
-        //        CurrentUserInfo = UserHelper.CurrentUserInfo;
-        //    }
-        //    catch
-        //    {
-        //        Response.Redirect("/Login/Index");
-        //    }
-        //}
+        CurrentUserInfo CurrentUserInfo;
+
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            byte[] result;
+            filterContext.HttpContext.Session.TryGetValue("CurrentUser", out result);
+            if (result == null)
+            {
+                filterContext.Result = new RedirectResult("/Login/Index");
+                return;
+            }
+            else
+            {
+                CurrentUserInfo = ByteConvertHelper.Bytes2Object<CurrentUserInfo>(result);
+            }
+            base.OnActionExecuting(filterContext);
+        }
 
         public IActionResult JsonOk<T>(T data,string message ="")
         {
