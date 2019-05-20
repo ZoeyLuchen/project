@@ -20,20 +20,12 @@ namespace MaiDongXi.Controllers
         }
 
         /// <summary>
-        /// 前台下单页面
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// 后台列表页面
         /// </summary>
         /// <returns></returns>
-        public IActionResult ManageIndex()
+        public IActionResult ManageIndex(int status = 0)
         {
+            ViewBag.Status = status;
             return View();
         }
 

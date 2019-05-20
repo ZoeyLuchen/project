@@ -59,5 +59,16 @@ namespace MaiDongXi.Repository.Repository
 
             return new PageModel<OrderInfoView>(list, pageInfo.PageIndex, pageInfo.PageSize, Convert.ToInt32(count));
         }
+
+        public List<ChatView> GetLineChatData()
+        {
+            string sqlStr = @"select count(1) Y, DATE_FORMAT(CreateTime,'%Y-%m-%d') X from orderinfo
+                                where CreateTime> date_add(now(), INTERVAL -30 day)
+                                GROUP BY DATE_FORMAT(CreateTime,'%Y-%m-%d')";
+
+            var list = _context.Database.SqlQuery<ChatView>(sqlStr);
+
+            return list;
+        }
     }
 }

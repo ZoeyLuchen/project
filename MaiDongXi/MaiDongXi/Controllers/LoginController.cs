@@ -52,9 +52,7 @@ namespace MaiDongXi.Controllers
                 };
 
                 //记录Session
-                HttpContext.Session.Set("CurrentUser", ByteConvertHelper.Object2Bytes(currentUserInfo));
-                byte[] bytes;
-                HttpContext.Session.TryGetValue("CurrentUser",out bytes);
+                HttpContext.Session.Set("CurrentUser", ByteConvertHelper.Object2Bytes(currentUserInfo));               
 
                 return Json(new { code = 200, message = "登录成功" });
             }
@@ -62,6 +60,12 @@ namespace MaiDongXi.Controllers
             {
                 return Json(new { code = 500, message = "用户名或密码错误" });
             }
+        }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return View("Index");
         }
     }
 }

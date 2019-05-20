@@ -31,6 +31,11 @@ namespace MaiDongXi.Repository
             return _context.Set<T>().Count();
         }
 
+        public virtual int Count(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().Count(predicate);
+        }
+
         public virtual IEnumerable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _context.Set<T>();

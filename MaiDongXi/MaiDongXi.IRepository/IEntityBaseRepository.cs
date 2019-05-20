@@ -10,6 +10,8 @@ namespace MaiDongXi.IRepository
 
         int Count();
 
+        int Count(Expression<Func<T, bool>> predicate);
+
         IEnumerable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties);
 
         T GetSingle(int id);

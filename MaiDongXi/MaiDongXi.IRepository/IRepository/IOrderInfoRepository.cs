@@ -8,5 +8,7 @@ namespace MaiDongXi.IRepository
     public interface IOrderInfoRepository : IEntityBaseRepository<OrderInfo>
     {
         PageModel<OrderInfoView> GetListByPages(PageInfo pageInfo, OrderInfoParam param);
+
+        List<ChatView> GetLineChatData();
     }
 }
