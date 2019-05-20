@@ -9,7 +9,7 @@
         <span>热卖</span> 茶水分离茶不苦，两头喝不漏水，双层防烫更耐摔，这款高硼硅玻璃杯卖火啦！
       </p>
       <div class="btn-box">
-        <el-button type="danger" icon="el-icon-shopping-cart-full">活动大促 抢三重礼</el-button>
+        <a href="#msgm"><el-button type="danger" icon="el-icon-shopping-cart-full">马  上  购  买</el-button></a>
       </div>
       <div class="red-box">
         <p>
@@ -87,6 +87,7 @@
       <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/49.jpg" alt>
       <img src="https://zoeyluchen.oss-cn-shenzhen.aliyuncs.com/img/50.jpg" alt>
     </div>
+    <a id="msgm"></a>
     <div class="form-title">
       <p>填写订单</p>
     </div>
@@ -160,7 +161,7 @@
 import cityList from "./assets/js/city_code.js";
 import axios from "axios";
 import _ from "lodash";
-console.log(cityList);
+
 export default {
   name: "app",
   data() {
@@ -220,10 +221,6 @@ export default {
     };
   },
   methods: {
-    ddd(a, b) {
-      console.log(a);
-      console.log(b);
-    },
     submitOrder(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -267,7 +264,7 @@ export default {
             });
         }
       });
-    }
+    }   
   },
   computed: {
     getSumPrice() {
@@ -324,6 +321,11 @@ body {
   width: 100%;
   background-color: #f92064;
   border-color: #f92064;
+}
+
+.btn-box a {
+    text-decoration: none;
+    color: #fff;
 }
 
 @import url("./assets/css/app.min.css");
