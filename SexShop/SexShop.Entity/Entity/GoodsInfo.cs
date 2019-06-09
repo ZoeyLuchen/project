@@ -1,0 +1,81 @@
+﻿using SexShop.IRepository;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SexShop.Entity
+{
+    /// <summary>
+    /// 商品表
+    /// </summary>
+    public class GoodsInfo : IEntityBase
+    {
+        public int Id { get; set; }
+
+        /// <summary>
+        /// 商品类型Code
+        /// </summary>
+        public int GoodsTypeCode { get; set; }
+
+        /// <summary>
+        /// 商品名称
+        /// </summary>
+        public string GoodsName { get; set; }
+
+        /// <summary>
+        /// 商品图片  用;分割
+        /// </summary>
+        public string GoodsImgs { get; set; }
+
+        /// <summary>
+        /// 显示价格
+        /// </summary>
+        public string DisplayPrice { get; set; }
+        
+        /// <summary>
+        /// 商品地址  填 广东 深圳
+        /// </summary>
+        public string Address { get; set; }
+
+        /// <summary>
+        /// 商品明显图片地址集合 
+        /// </summary>
+        public string GoodsDeatilImgs { get; set; }
+
+        /// <summary>
+        /// 商品状态
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>        
+        public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 创建人
+        /// </summary>
+        public int CreateBy { get; set; }
+
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public DateTime UpdateTime { get; set; }
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public int UpdateBy { get; set; }
+
+        /// <summary>
+        /// 是否删除
+        /// </summary>
+        public int IsDel { get; set; }
+    }
+
+    public enum GoodsStatusEnum
+    {
+        已上架 = 1,
+        已下架 = 2
+    }
+}

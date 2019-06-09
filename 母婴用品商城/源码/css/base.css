@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+   /** -webkit-appearance: none;**/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
+    box-sizing: border-box;
+}
+input[type="checkbox"]{-webkit-appearance:none;outline: none;}
+input.check{background:url(../images/icon/icon_radio3.png) no-repeat center left;background-size:20px 20px;position:absolute;top:50%;left:10px;margin-top:-18px;width:20px;height:35px;}
+input.check:checked{background:url(../images/icon/icon_radio4.png) no-repeat center left;background-size:20px 20px;}
+input.goodsCheck:checked{background:url(../images/icon/icon_radio4.png) no-repeat center left;background-size:20px 20px;}
+input.check:checked{background:url(../images/icon/icon_radio4.png) no-repeat center left;background-size:20px 20px;}
+.checked{background:url(../images/icon/icon_radio4.png) no-repeat left center;background-size:20px 20px;position:absolute;top:50%;left:15px;margin-top:-18px;width:20px;height:35px;}
+
+/*尾部开始*/
+.footer .copyright{height:44px;line-height:44px;text-align:center;color:#848689;font-size:12px;}
+/*尾部结束*/

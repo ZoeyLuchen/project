@@ -1,0 +1,124 @@
+﻿@{
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">
+    <meta name="format-detection" content="telephone=notelphone=no, email=no" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <meta name="apple-touch-fullscreen" content="yes" /><!-- 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!-- 设置苹果工具栏颜色:默认值为 default，可以定为 black和 black-translucent-->
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><!-- 不让百度转码 -->
+    <meta name="HandheldFriendly" content="true"><!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="MobileOptimized" content="320"><!-- 微软的老式浏览器 -->
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <meta name="browsermode" content="application"><!-- UC应用模式 -->
+    <meta name="x5-page-mode" content="app"><!-- QQ应用模式 -->
+    <meta name="msapplication-tap-highlight" content="no"><!-- windows phone 点击无高光 -->
+    <meta name="apple-mobile-web-app-capable" content="yes"><!-- ios 开启对web app程序的支持 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- ios 改变顶部状态条的颜色 -->
+    <title>登录</title>
+    <link rel="stylesheet" href="~/lib/element-ui-2.4.0/css/index.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
+
+</head>
+<body>
+    <div class="login" id="app">
+        <div class="login-in">
+            <h2 class="bt">后台登录</h2>
+            <div class="nr">
+                <div class="nr-in">
+                    <h4>登录</h4>
+                    <form action="">
+                        <div>
+                            <div class="bian">
+                                <span><b class="iconfont icon-zhanghao"></b></span> 
+                                <input type="text" v-model="account"> 
+                            </div>
+                            <p class="red"></p>
+                        </div>
+                        <div>
+                            <div class="bian">
+                                <span><b class="iconfont icon-mima1"></b></span>
+                                <input type="password" v-model="passWord">
+                            </div>
+                            <p class="red"></p>
+                        </div>
+                        <div>
+                            <input type="button" class="denglu" v-bind:class="{disabled:loginBtnDisabled}" v-bind:disabled="loginBtnDisabled" v-on:click="login" :value="btnText" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="~/lib/vue-v2.6.8.min.js"></script>
+    <script type="text/javascript" src="~/lib/axios.min.js"></script>
+    <script type="text/javascript" src="~/lib/element-ui-2.4.0/index.js"></script>
+    <script type="text/javascript" src="~/js/qs.js"></script>
+
+    <script type="text/javascript">
+        Vue.config.devtools = true;
+
+        var _that;
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                account: "",
+                passWord: "",
+                btnText: "登录"
+            },
+            mounted: function () {
+                //加载完成函数
+                _that = this;
+                this.$nextTick(function () {
+
+                });
+            },
+            computed: {
+                loginBtnDisabled: function () {
+                    return !(this.account.length != 0 && this.passWord.length != 0);
+                }
+            },
+            methods: {
+                login: function () {
+                    _that.btnText = "登录中,请稍后";
+                    var model = {};
+                    model.account = _that.account;
+                    model.passWord = _that.passWord;
+
+                    axios.get("/Login/Login", { params: model }).then(function (res) {
+                        if (res.data.code == 200) {
+                            document.location.href = "/home/Index"
+                        } else {
+                            _that.$message({
+                                message: res.data.message,
+                                center: true,
+                                type: 'error'
+                            });
+                            _that.btnText = "登录"
+                        }
+                    });
+                }
+            }
+        });
+
+        document.onkeydown = function (e) {
+            if (!e) e = window.event;
+            if ((e.keyCode || e.which) == 13) {
+                if (!vm.loginBtnDisabled)
+                    vm.login();
+            }
+        }
+    </script>
+</body>
+</html>
