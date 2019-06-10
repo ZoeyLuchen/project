@@ -1,10 +1,10 @@
 ﻿using SexShop.Entity;
-using SexShop.IRepository;
+using SexShop.Repository;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SexShop.Repository.Repository
+namespace SexShop.IRepository
 {
     public class GoodsInfoRepository : EntityBaseRepository<GoodsInfo>, IGoodsInfoRepository, IAutofacBase
     {
