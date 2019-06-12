@@ -15,7 +15,7 @@ namespace SexShop.Entity
         /// <summary>
         /// 商品类型Code
         /// </summary>
-        public int GoodsTypeCode { get; set; }
+        public string GoodsTypeCode { get; set; }
 
         /// <summary>
         /// 商品名称
@@ -48,6 +48,11 @@ namespace SexShop.Entity
         public int Status { get; set; }
 
         /// <summary>
+        /// 是否置顶
+        /// </summary>
+        public bool IsTop { get; set; }
+
+        /// <summary>
         /// 创建时间
         /// </summary>        
         public DateTime CreateTime { get; set; }
@@ -70,7 +75,7 @@ namespace SexShop.Entity
         /// <summary>
         /// 是否删除
         /// </summary>
-        public int IsDel { get; set; }
+        public bool IsDel { get; set; }
     }
 
     public enum GoodsStatusEnum

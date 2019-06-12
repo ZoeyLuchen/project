@@ -28,9 +28,14 @@ namespace SexShop.Entity
         public string TypeName { get; set; }
 
         /// <summary>
+        /// 排序字段
+        /// </summary>
+        public int OrderNum { get; set; }
+
+        /// <summary>
         /// 是否删除
         /// </summary>
-        public int IsDel { get; set; }
+        public bool IsDel { get; set; }
 
         /// <summary>
         /// 创建时间

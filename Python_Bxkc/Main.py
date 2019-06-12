@@ -124,6 +124,7 @@ def getProductData(url,param):
                 text = RequestsHelper.get(product["DetailUrl"], {}, "utf-8").text
                 po = BeautifulSoup(text, 'lxml');
                 context = po.find(id="y_prodsingle").get_text();
+                print(context);
                 try:
                     company["CompanyName"] = re.findall(".*由(.*)承保.*", context[:80])[0].strip()
                     company["IsDisable"] = False;

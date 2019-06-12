@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SexShop.IRepository
 {
-    public interface IGoodsInfoRepository : IEntityBaseRepository<GoodsInfo>
+    public interface IGoodsCommentImgRepository : IEntityBaseRepository<GoodsCommentImg>
     {
     }
 }

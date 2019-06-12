@@ -6,9 +6,9 @@ using System.Text;
 
 namespace SexShop.IRepository
 {
-    public class GoodsInfoRepository : EntityBaseRepository<GoodsInfo>, IGoodsInfoRepository, IAutofacBase
+    public class GoodsCommentImgRepository : EntityBaseRepository<GoodsCommentImg>, IGoodsCommentImgRepository, IAutofacBase
     {
-        public GoodsInfoRepository(SexShopDbContext context) : base(context)
+        public GoodsCommentImgRepository(SexShopDbContext context) : base(context)
         {
         }
     }
