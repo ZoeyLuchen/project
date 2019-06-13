@@ -7,5 +7,6 @@ namespace SexShop.IRepository
 {
     public interface IGoodsInfoRepository : IEntityBaseRepository<GoodsInfo>
     {
+        PageModel<GoodsInfo> SearchGoodsList(GoodsSearchModel searchModel, PageInfo page);
     }
 }

@@ -46,10 +46,10 @@ namespace SexShop.Entity
         /// <param name="pageSize">每页记录数</param>
         /// <param name="totalCount">总记录数</param>
         /// <value></value>
-        public PageModel(List<T> items, int pageIndex, int pageSize, int totalCount)
+        public PageModel(List<T> items, int pageIndex, int pageSize, int? totalCount = 0)
         {
             this.Items = items;
-            this.TotalCount = totalCount;
+            this.TotalCount = totalCount??0;
             this.PageIndex = pageIndex;
             this.PageSize = pageSize;
         }

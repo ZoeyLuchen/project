@@ -23,15 +23,25 @@ namespace SexShop.Entity
         public string GoodsName { get; set; }
 
         /// <summary>
+        /// 商品描述
+        /// </summary>
+        public string GoodsDesc { get; set; }
+
+        /// <summary>
         /// 商品图片  用;分割
         /// </summary>
         public string GoodsImgs { get; set; }
 
         /// <summary>
-        /// 显示价格
+        /// 显示价格最低价
         /// </summary>
-        public string DisplayPrice { get; set; }
-        
+        public decimal? BeginDisplayPrice { get; set; }
+
+        /// <summary>
+        /// 显示价格最高价
+        /// </summary>
+        public decimal? EndDisplayPrice { get; set; }
+
         /// <summary>
         /// 商品地址  填 广东 深圳
         /// </summary>
@@ -51,6 +61,11 @@ namespace SexShop.Entity
         /// 是否置顶
         /// </summary>
         public bool IsTop { get; set; }
+
+        /// <summary>
+        /// 销量
+        /// </summary>
+        public int SalesVolume { get; set; }
 
         /// <summary>
         /// 创建时间

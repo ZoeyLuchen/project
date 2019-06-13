@@ -52,5 +52,10 @@ namespace SexShop.Entity
         /// </summary>
         public int UpdateBy { get; set; }
 
+        /// <summary>
+        /// 是否删除
+        /// </summary>
+        public bool IsDel { get; set; }
+
     }
 }

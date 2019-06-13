@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SexShop.IRepository
 {
+    /// <summary>
+    /// 商品评价表
+    /// </summary>
     public interface IGoodsCommentRepository : IEntityBaseRepository<GoodsComment>
     {
     }

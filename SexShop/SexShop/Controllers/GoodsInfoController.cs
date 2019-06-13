@@ -32,6 +32,17 @@ namespace SexShop.Controllers
             return JsonOk(list);
         }
 
+        /// <summary>
+        /// 根据查询条件 查询商品列表
+        /// </summary>
+        /// <param name="searchModel"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public IActionResult SearchGoodsList(GoodsSearchModel searchModel, PageInfo page)
+        {
+            var list = _goodsInfoRepository.SearchGoodsList(searchModel, page);
 
+            return Json(list);
+        }
     }
 }

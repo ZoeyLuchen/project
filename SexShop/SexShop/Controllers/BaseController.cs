@@ -12,7 +12,7 @@ namespace SexShop.Controllers
     //[UserAuthorize]
     public class BaseController : Controller
     {
-        CurrentUserInfo CurrentUserInfo;
+        public CurrentUserInfo CurrentUser;
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -25,7 +25,7 @@ namespace SexShop.Controllers
             }
             else
             {
-                CurrentUserInfo = ByteConvertHelper.Bytes2Object<CurrentUserInfo>(result);
+                CurrentUser = ByteConvertHelper.Bytes2Object<CurrentUserInfo>(result);
             }
             base.OnActionExecuting(filterContext);
         }

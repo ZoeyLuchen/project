@@ -37,7 +37,7 @@ namespace SexShop.Controllers
         /// <returns></returns>
         public IActionResult GetAllList()
         {
-            var list = _goodsTypeRepository.FindBy(e.IsDel == false).OrderBy(e => e.OrderNum);
+            var list = _goodsTypeRepository.FindBy(e=> e.IsDel == false).OrderBy(e => e.OrderNum);
 
             return JsonOk(list);
         }
