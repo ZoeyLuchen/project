@@ -6,6 +6,7 @@ namespace SexShop.IRepository
 {
     public interface IEntityBaseRepository<T>
     {
+
         IEnumerable<T> GetAll();
 
         int Count();
@@ -20,7 +21,9 @@ namespace SexShop.IRepository
 
         IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate);
 
-        void Add(T entity);
+        int Add(T entity);
+
+        bool BatchAdd(List<T> list);
 
         void Update(T entity);
 

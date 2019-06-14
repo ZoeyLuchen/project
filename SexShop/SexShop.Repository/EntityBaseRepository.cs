@@ -6,6 +6,7 @@ using System.Text;
 using SexShop.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using EFCore.BulkExtensions;
 
 namespace SexShop.Repository
 {
@@ -66,10 +67,17 @@ namespace SexShop.Repository
             return _context.Set<T>().Where(predicate);
         }
 
-        public virtual void Add(T entity)
+        public virtual int Add(T entity)
         {
             EntityEntry dbEntityEntry = _context.Entry<T>(entity);
-            _context.Set<T>().Add(entity);
+            var m = _context.Set<T>().Add(entity);
+            return m.Entity.Id;
+        }
+
+        public bool BatchAdd(List<T> list)
+        {
+
+            _context.BulkInsert(list);            
         }
 
         public virtual void Update(T entity)

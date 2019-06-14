@@ -26,7 +26,7 @@ namespace SexShop.Controllers
         }
 
         /// <summary>
-        /// 根据商品Id获取商品列表
+        /// 根据商品Id获取商品评论列表
         /// </summary>
         /// <param name="goodsId"></param>
         /// <param name="pageInfo"></param>
@@ -45,7 +45,7 @@ namespace SexShop.Controllers
         }
 
         /// <summary>
-        /// 根据商品Id获取商品列表
+        /// 根据商品Id获取我的商品评论列表
         /// </summary>
         /// <param name="goodsId"></param>
         /// <param name="pageInfo"></param>
@@ -92,6 +92,38 @@ namespace SexShop.Controllers
             }
 
             return newList;
+        }
+
+        public IActionResult AddComment(GoodsCommentView model)
+        {
+            try
+            {
+                GoodsComment goodsComment = new GoodsComment()
+                {
+                    Comment = model.Comment,
+                    CreateBy = model.CreateBy,
+                    CreateTime = model.CreateTime,
+                    DescScore = model.DescScore,
+                    GoodsId = model.GoodsId,
+                    Id = model.Id,
+                    UpdateBy = model.UpdateBy,
+                    UpdateTime = model.UpdateTime,
+                    WlScore = model.WlScore
+                };
+
+                var id = _goodsCommentRepository.AddComment(goodsComment, model.ImgList);
+                
+                if (model.ImgList.Any())
+                {
+                    _goodsCommentImgRepository.BatchAdd(model.ImgList);
+                }
+                _goodsCommentRepository.Commit();
+            }
+            catch (Exception)
+            {
+                _goodsCommentRepository.
+            }
+            
         }
     }
 }
