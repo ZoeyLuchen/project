@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SexShop.IRepository;
 using SexShop.Entity;
+using System.IO;
+using Microsoft.Extensions.Options;
+using SexShop.Common;
+using System.DrawingCore;
 
 namespace SexShop.Controllers
 {
@@ -12,12 +16,15 @@ namespace SexShop.Controllers
     {
         private IGoodsCommentRepository _goodsCommentRepository;
         private IGoodsCommentImgRepository _goodsCommentImgRepository;
+        private AppSetting Config;
 
         public GoodsCommentController(IGoodsCommentRepository goodsCommentRepository,
-            IGoodsCommentImgRepository goodsCommentImgRepository)
+            IGoodsCommentImgRepository goodsCommentImgRepository,
+            IOptions<AppSetting> appSetting)
         {
             _goodsCommentRepository = goodsCommentRepository;
             _goodsCommentImgRepository = goodsCommentImgRepository;
+            Config = appSetting.Value;
         }
 
         public IActionResult Index()
@@ -94,36 +101,79 @@ namespace SexShop.Controllers
             return newList;
         }
 
+        /// <summary>
+        /// 添加商品评论
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public IActionResult AddComment(GoodsCommentView model)
+        {
+            var userId = CurrentUser.Id;
+
+            GoodsComment goodsComment = new GoodsComment()
+            {
+                Comment = model.Comment,
+                CreateBy = userId,
+                CreateTime = model.CreateTime,
+                DescScore = model.DescScore,
+                GoodsId = model.GoodsId,
+                UpdateBy = userId,
+                UpdateTime = model.UpdateTime,
+                WlScore = model.WlScore
+            };
+
+            var bo = _goodsCommentRepository.AddComment(goodsComment, model.ImgList);
+            if (bo)
+            {
+                return JsonOk("");
+            }
+            else
+            {
+                return JsonError();
+            }
+        }
+
+        /// <summary>
+        /// 图片上传
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult UpLoadImg()
         {
             try
             {
-                GoodsComment goodsComment = new GoodsComment()
+                var date = Request;
+                var files = Request.Form.Files;
+                //long size = files.Sum(f => f.Length);
+                string webRootPath = Config.HttpUrl;
+                string imgUpLoadUrl = Config.ImgUpLoadUrl + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
+                List<dynamic> list = new List<dynamic>();
+                foreach (var formFile in files)
                 {
-                    Comment = model.Comment,
-                    CreateBy = model.CreateBy,
-                    CreateTime = model.CreateTime,
-                    DescScore = model.DescScore,
-                    GoodsId = model.GoodsId,
-                    Id = model.Id,
-                    UpdateBy = model.UpdateBy,
-                    UpdateTime = model.UpdateTime,
-                    WlScore = model.WlScore
-                };
+                    if (formFile.Length > 0)
+                    {
+                        string fileExt = formFile.FileName.Substring(formFile.FileName.LastIndexOf(".") + 1, (formFile.FileName.Length - formFile.FileName.LastIndexOf(".") - 1)); //文件扩展名，不含“.”
+                        long fileSize = formFile.Length; //获得文件大小，以字节为单位
+                        string newFileName = System.Guid.NewGuid().ToString() + "." + fileExt; //随机生成新的文件名
+                        string newFileNameSlt = "Min_" + newFileName; //随机生成新的文件名
+                        var filePath = imgUpLoadUrl + newFileName;
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            formFile.CopyTo(stream);
+                        }
 
-                var id = _goodsCommentRepository.AddComment(goodsComment, model.ImgList);
-                
-                if (model.ImgList.Any())
-                {
-                    _goodsCommentImgRepository.BatchAdd(model.ImgList);
+                        ImageHelper.ResizeImage(new Bitmap(filePath), new Size(new Point(80, 80))).Save(newFileNameSlt);
+
+                        list.Add(new { imgUrl = webRootPath + imgUpLoadUrl + newFileName, sltImgUrl = webRootPath + imgUpLoadUrl + newFileNameSlt });
+                    }
                 }
-                _goodsCommentRepository.Commit();
+
+                return JsonOk(list);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                _goodsCommentRepository.
+                return JsonError(e.Message);
             }
-            
+           
         }
     }
 }

@@ -38,7 +38,10 @@ namespace SexShop
 
             services.AddDbContext<SexShopDbContext>(o => o.UseMySQL(Configuration.GetConnectionString("SqlServerConnection")));
             services.AddSession();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .Configure<AppSetting>(Configuration.GetSection("AppSetting"))
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
          
             #region 跨域
             //var urls = Configuration["AppConfig:Cores"].Split(',');

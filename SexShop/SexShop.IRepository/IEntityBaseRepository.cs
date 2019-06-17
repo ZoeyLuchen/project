@@ -23,7 +23,7 @@ namespace SexShop.IRepository
 
         int Add(T entity);
 
-        bool BatchAdd(List<T> list);
+        void BatchAdd(List<T> list);
 
         void Update(T entity);
 

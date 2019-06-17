@@ -12,12 +12,7 @@ namespace SexShop.Entity
         /// <summary>
         /// 账号
         /// </summary>
-        public string Account { get; set; }
-
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string PassWord { get; set; }
+        public string Account { get; set; }       
 
         /// <summary>
         /// 用户名
@@ -42,7 +37,12 @@ namespace SexShop.Entity
         /// <summary>
         /// 邀请码
         /// </summary>
-        public string InvitationCode { get; set; }            
+        public string InvitationCode { get; set; }
+
+        /// <summary>
+        /// 被邀请码
+        /// </summary>
+        public string BeInvitationCode { get; set; }
 
         /// <summary>
         /// 创建时间
@@ -57,6 +57,6 @@ namespace SexShop.Entity
         /// <summary>
         /// 是否删除
         /// </summary>
-        public int IsDel { get; set; }
+        public bool IsDel { get; set; }
     }
 }

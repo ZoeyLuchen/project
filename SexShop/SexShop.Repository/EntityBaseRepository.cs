@@ -74,10 +74,13 @@ namespace SexShop.Repository
             return m.Entity.Id;
         }
 
-        public bool BatchAdd(List<T> list)
+        public void BatchAdd(List<T> list)
         {
-
-            _context.BulkInsert(list);            
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                _context.BulkInsert(list);
+                transaction.Commit();
+            }
         }
 
         public virtual void Update(T entity)

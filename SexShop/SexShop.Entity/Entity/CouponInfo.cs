@@ -19,18 +19,26 @@ namespace SexShop.Entity
 
         /// <summary>
         /// 优惠劵类型
+        /// 000001 ：注册赠送券
+        /// 000002 ：邀请用户返券
+        /// 000003 ：购买现金返券
         /// </summary>
         public string CouponType { get; set; }
 
         /// <summary>
         /// 优惠金额
         /// </summary>
-        public string DiscountedPrice { get; set; }
+        public decimal DiscountedPrice { get; set; }
+
+        /// <summary>
+        /// 有效时长
+        /// </summary>
+        public int EffectiveLong { get; set; }
 
         /// <summary>
         /// 是否删除
         /// </summary>
-        public int IsDel { get; set; }
+        public bool IsDel { get; set; }
 
         /// <summary>
         /// 创建时间

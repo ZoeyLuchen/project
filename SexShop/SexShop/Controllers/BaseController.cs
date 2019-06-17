@@ -6,6 +6,7 @@ using SexShop.Common;
 using SexShop.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Options;
 
 namespace SexShop.Controllers
 {
@@ -13,6 +14,7 @@ namespace SexShop.Controllers
     public class BaseController : Controller
     {
         public CurrentUserInfo CurrentUser;
+        
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {

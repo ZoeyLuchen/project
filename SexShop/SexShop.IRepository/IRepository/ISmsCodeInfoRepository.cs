@@ -5,8 +5,7 @@ using System.Text;
 
 namespace SexShop.IRepository
 {
-    public interface IUserInfoRepository:IEntityBaseRepository<UserInfo>
+    public interface ISmsCodeInfoRepository : IEntityBaseRepository<SmsCodeInfo>
     {
-        bool AddUserInfo(UserInfo);
     }
 }
