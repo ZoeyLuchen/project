@@ -23,6 +23,11 @@ namespace SexShop.Entity
         public int GoodsId { get; set; }
 
         /// <summary>
+        /// 商品规格Id
+        /// </summary>
+        public int GsId { get; set; }
+
+        /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime CreateTime{ get; set; }

@@ -7,6 +7,6 @@ namespace SexShop.IRepository
 {
     public interface IUserInfoRepository:IEntityBaseRepository<UserInfo>
     {
-        bool AddUserInfo(UserInfo);
+        bool AddUserInfo(UserInfo model);
     }
 }

@@ -48,7 +48,7 @@ namespace SexShop.Entity
         public string Address { get; set; }
 
         /// <summary>
-        /// 商品明显图片地址集合 
+        /// 商品明细图片地址集合 
         /// </summary>
         public string GoodsDeatilImgs { get; set; }
 
