@@ -1,0 +1,143 @@
+*{
+  margin: 0;
+  padding: 0
+}
+
+/*html{
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+}*/
+
+html, body {
+    height: 100%;
+    background-color:#eee;
+    font-family: 'Microsoft YaHei';
+    overflow: hidden;
+}
+
+.login {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+
+/*.login{
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: url(../images/login.jpg) no-repeat center #333;
+  -webkit-background-size: cover;
+}*/
+
+.login-in{
+  text-align: center
+}
+
+.login-in .bt{
+  font-size: 56px;
+  padding-top: 7%;
+  font-weight: 400;
+}
+
+.nr{
+  
+}
+
+.nr-in{
+  display: inline-block;
+  width: 425px;
+  background: rgba(255, 255, 255,0.7);
+  margin: 4% 0;
+  border-radius: 10px;
+  text-align: left;
+  padding: 30px;
+  box-sizing:border-box;
+}
+
+.nr-in h4{
+  text-align: center;
+  font-size: 30px;
+  padding: 10px 0 20px 0;
+  font-weight: 400;
+  color: #444
+}
+
+.iconfont{
+  font-size: 18px;
+  color: #767676
+}
+
+.bian{
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 10px;
+}
+
+.bian span{
+  display: inline-block;
+  padding-right: 10px;
+  border-right: 1px solid #ccc
+}
+
+.bian input{
+  border: 0 none;
+  height: 20px;
+  vertical-align: top;
+  outline:none;
+  width: 300px;
+  text-indent: 10px
+}
+
+.bainduan{
+  display: inline-block;
+  vertical-align: top;
+}
+
+.bainduan input{
+  width: 164px;
+}
+
+.yzm {
+    display: inline-block;
+    width: 140px;
+    height: 42px;
+    background: #fff
+}
+
+.red{
+  color: red;
+  font-size: 12px;
+  margin:3px 0 20px 5px;
+}
+
+.denglu{
+  background: #358ef2;
+  width: 100%;
+  height: 42px;
+  color: #fff;
+  border-radius: 5px;
+  border: 0 none;
+  cursor: pointer;
+}
+
+.denglu.disabled {
+    background: #ccc;
+}
+
+.wjmm {
+    padding: 5px 0 0 0px;
+}
+
+.wjmm a{
+  color: #358ef2;
+  font-size: 14px;
+  text-decoration:none
+}
