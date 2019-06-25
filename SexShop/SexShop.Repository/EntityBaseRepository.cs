@@ -7,6 +7,7 @@ using SexShop.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using EFCore.BulkExtensions;
+using System.Data.Common;
 
 namespace SexShop.Repository
 {
@@ -21,9 +22,16 @@ namespace SexShop.Repository
         }
 
         #endregion
-        public virtual IEnumerable<T> GetAll()
-
+        public IEnumerable<T> GetListBySql(string whereSql, DbParameter[] paras)
         {
+
+            return _context.Database.SqlQuery<T>(sql, paras);
+        }
+
+        public virtual IEnumerable<T> GetAll()
+        {
+           
+
             return _context.Set<T>().AsEnumerable();
         }
 
