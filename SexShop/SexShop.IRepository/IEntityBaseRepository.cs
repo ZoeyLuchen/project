@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq.Expressions;
 
 namespace SexShop.IRepository
 {
     public interface IEntityBaseRepository<T>
     {
+
+        IEnumerable<T> GetListBySql(string sql, DbParameter[] paras);
 
         IEnumerable<T> GetAll();
 

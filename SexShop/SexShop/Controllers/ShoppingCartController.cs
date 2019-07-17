@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using SexShop.IRepository;
 using SexShop.Entity;
 using System.Linq.Expressions;
+using System.Data.Common;
+using MySql.Data.MySqlClient;
 
 namespace SexShop.Controllers
 {
@@ -105,9 +107,12 @@ namespace SexShop.Controllers
         /// <returns></returns>
         public IActionResult DeleteGoods(List<ShoppingCart> goodsList)
         {
-            Expression<Func<ShoppingCart, bool>> expression = null;
+            string whereStr = "";
+            var sqlParam = new List<DbParameter>();
+            MySqlParameter
+            goodsList.ForEach(g => { });
 
-            goodsList.ForEach(g=> { expression.Compile })
+            _shoppingCartRepository.GetListBySql(sql,)
         }
     }
 }
