@@ -31,8 +31,8 @@ namespace InsteadBuyPlatform.Controllers
             //}
             CurrentUser = new CurrentUserInfo() {
                 Account = "15989870739",
-                Id = 1,
-                UserName="周师师"
+                Id = 2,
+                UserName="邹师师"
             };
             base.OnActionExecuting(filterContext);
         }

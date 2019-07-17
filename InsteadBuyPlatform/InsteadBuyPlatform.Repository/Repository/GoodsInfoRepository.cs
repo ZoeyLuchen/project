@@ -42,7 +42,7 @@ namespace InsteadBuyPlatform.Repository.Repository
                 sqlParam.Add(new MySqlParameter("@Key", "%" + searchModel.Key + "%"));
             }
 
-            string sql = @"select top(8) * from GoodsInfo " + sqlWhere ;
+            string sql = @"select * from GoodsInfo " + sqlWhere +" limit 8 ";
 
             var list = _context.Database.SqlQuery<GoodsInfo>(sql, sqlParam.ToArray());
             return list;

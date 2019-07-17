@@ -76,6 +76,7 @@ namespace InsteadBuyPlatform.Repository
         {
             EntityEntry dbEntityEntry = _context.Entry<T>(entity);
             var m = _context.Set<T>().Add(entity);
+            _context.SaveChanges();
             return m.Entity.Id;
         }
 

@@ -27,7 +27,7 @@ namespace InsteadBuyPlatform.Repository
                     var entityEntry = _context.Set<UserInfo>().Add(model);
                     _context.SaveChanges();
 
-                    var couponModel = _context.Set<CouponInfo>().FirstOrDefault(e => e.CouponType == "000001" && e.IsDel == false);
+                    var couponModel = _context.Set<CouponInfo>().FirstOrDefault(e => e.CouponType == "000001" && e.IsDel == 0);
                     if (couponModel != null)
                     {
                         UserCoupon userCoupon = new UserCoupon()

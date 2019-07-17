@@ -27,7 +27,7 @@ namespace InsteadBuyPlatform.Controllers
         /// <returns></returns>
         public IActionResult Add(GoodsType model)
         {
-            model.IsDel = false;
+            model.IsDel = 0;
 
             try
             {
@@ -76,7 +76,7 @@ namespace InsteadBuyPlatform.Controllers
         /// <returns></returns>
         public IActionResult GetAllList()
         {
-            var list = _goodsTypeRepository.FindBy(e=> e.IsDel == false);
+            var list = _goodsTypeRepository.FindBy(e=> e.IsDel == 0);
 
             return JsonOk(list);
         }

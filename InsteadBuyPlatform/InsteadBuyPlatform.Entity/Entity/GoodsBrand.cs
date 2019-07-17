@@ -13,13 +13,18 @@ namespace InsteadBuyPlatform.Entity
         public int Id { get; set; }
 
         /// <summary>
-        /// 品牌名
+        /// 中文品牌名
         /// </summary>
-        public string BrandName { get; set; }
+        public string ChsBrandName { get; set; }
+
+        /// <summary>
+        /// 英文品牌名
+        /// </summary>
+        public string EnBrandName { get; set; }
 
         /// <summary>
         /// 是否删除
         /// </summary>
-        public bool IsDel { get; set; } 
+        public int IsDel { get; set; } 
     }
 }

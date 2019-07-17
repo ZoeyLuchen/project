@@ -37,6 +37,6 @@ namespace InsteadBuyPlatform.Entity
         /// <summary>
         /// 是否使用
         /// </summary>
-        public bool IsUse { get; set; }
+        public int IsUse { get; set; }
     }
 }

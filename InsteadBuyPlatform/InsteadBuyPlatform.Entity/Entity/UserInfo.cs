@@ -15,6 +15,11 @@ namespace InsteadBuyPlatform.Entity
         public string Account { get; set; }
 
         /// <summary>
+        /// 密码
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
         /// 用户名
         /// </summary>
         public string UserName { get; set; }
@@ -57,6 +62,6 @@ namespace InsteadBuyPlatform.Entity
         /// <summary>
         /// 是否删除
         /// </summary>
-        public bool IsDel { get; set; }
+        public int IsDel { get; set; }
     }
 }

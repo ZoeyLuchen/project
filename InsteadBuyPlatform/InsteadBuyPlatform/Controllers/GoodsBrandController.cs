@@ -32,7 +32,7 @@ namespace InsteadBuyPlatform.Controllers
         /// <returns></returns>
         public IActionResult Add(GoodsBrand model)
         {
-            model.IsDel = false;
+            model.IsDel = 0;
 
             try
             {
@@ -55,7 +55,8 @@ namespace InsteadBuyPlatform.Controllers
             try
             {
                 var oldModel = _goodsBrandRepository.GetSingle(model.Id);
-                oldModel.BrandName = model.BrandName;
+                oldModel.ChsBrandName = model.ChsBrandName;
+                oldModel.EnBrandName = model.EnBrandName;
                 oldModel.IsDel = model.IsDel;
                 _goodsBrandRepository.Update(oldModel);
                 return JsonOk("");
@@ -75,11 +76,11 @@ namespace InsteadBuyPlatform.Controllers
         {
             if (string.IsNullOrEmpty(key))
             {
-                return JsonOk(_goodsBrandRepository.FindBy(e => e.IsDel == false).Take(8).ToList());
+                return JsonOk(_goodsBrandRepository.FindBy(e => e.IsDel == 0).Take(8).ToList());
             }
             else
             {
-                return JsonOk(_goodsBrandRepository.FindBy(e => e.IsDel == false && e.BrandName.Contains(key)).Take(8).ToList());
+                return JsonOk(_goodsBrandRepository.FindBy(e => e.IsDel == 0 && (e.ChsBrandName.Contains(key)|| e.EnBrandName.Contains(key))).Take(8).ToList());
             }            
         }
     }

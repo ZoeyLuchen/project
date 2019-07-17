@@ -48,7 +48,7 @@ namespace InsteadBuyPlatform.Controllers
         {
             try
             {
-                var userModel = _userInfoRepository.FindBy(e => e.InvitationCode == code && e.IsDel == false).FirstOrDefault();
+                var userModel = _userInfoRepository.FindBy(e => e.InvitationCode == code && e.IsDel == 0).FirstOrDefault();
                 if (userModel != null)
                 {
                     var myUserId = CurrentUser.Id;
@@ -56,7 +56,7 @@ namespace InsteadBuyPlatform.Controllers
                     myUser.BeInvitationCode = code;
                     _userInfoRepository.Update(myUser);
 
-                    var couponModel = _couponInfoRepository.FindBy(e => e.CouponType == "000001" && e.IsDel == false).FirstOrDefault();
+                    var couponModel = _couponInfoRepository.FindBy(e => e.CouponType == "000001" && e.IsDel == 0).FirstOrDefault();
                     if (couponModel != null)
                     {
                         UserCoupon userCoupon = new UserCoupon()

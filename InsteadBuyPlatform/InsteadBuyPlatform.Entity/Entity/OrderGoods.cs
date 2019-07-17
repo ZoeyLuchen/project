@@ -15,7 +15,7 @@ namespace InsteadBuyPlatform.Entity
         public int OrderId { get; set; }
 
         /// <summary>
-        /// 订单Id
+        /// 商品Id
         /// </summary>
         public int GoodsId { get; set; }
 

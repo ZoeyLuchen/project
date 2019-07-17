@@ -35,7 +35,7 @@ namespace InsteadBuyPlatform.Controllers
             {
                 model.CreateBy = CurrentUser.Id;
                 model.CreateTime = DateTime.Now;
-                model.IsDel = false;
+                model.IsDel = 0;
                 model.UpdateBy = CurrentUser.Id;
                 model.UpdateTime = DateTime.Now;
 
@@ -85,7 +85,7 @@ namespace InsteadBuyPlatform.Controllers
             try
             {
                 var oldModel = _goodsInfoRepository.GetSingle(e => e.Id == id);
-                oldModel.IsDel = true;
+                oldModel.IsDel = 0;
                 _goodsInfoRepository.Update(oldModel);
 
                 return JsonOk("");
@@ -137,7 +137,7 @@ namespace InsteadBuyPlatform.Controllers
         /// <returns></returns>
         public IActionResult GetSpecificationList(int goodsId)
         {
-            return JsonOk(_goodsSpecificationRepository.FindBy(e => e.IsDel == false));
+            return JsonOk(_goodsSpecificationRepository.FindBy(e => e.GoodsId == goodsId && e.IsDel == 0));
         }
     }
 }

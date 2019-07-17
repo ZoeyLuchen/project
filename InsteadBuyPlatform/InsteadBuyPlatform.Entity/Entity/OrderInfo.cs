@@ -25,7 +25,7 @@ namespace InsteadBuyPlatform.Entity
         /// <summary>
         /// 是否打单
         /// </summary>
-        public bool IsPrint { get; set; }       
+        public int IsPrint { get; set; }       
 
         /// <summary>
         /// 是否删除

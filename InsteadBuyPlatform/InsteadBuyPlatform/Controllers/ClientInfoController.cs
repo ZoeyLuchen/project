@@ -32,7 +32,7 @@ namespace InsteadBuyPlatform.Controllers
         /// <returns></returns>
         public IActionResult Add(ClientInfo model)
         {
-            model.IsDel = false;
+            model.IsDel = 0;
             model.CreateTime = DateTime.Now;
             model.UserId = CurrentUser.Id;
             model.UpdateTime = DateTime.Now;
@@ -87,7 +87,7 @@ namespace InsteadBuyPlatform.Controllers
             try
             {
                 var oldModel = _clientInfoRepository.GetSingle(id);
-                oldModel.IsDel = true;
+                oldModel.IsDel = 1;
                 _clientInfoRepository.Update(oldModel);
                 return JsonOk("");
             }
@@ -104,14 +104,25 @@ namespace InsteadBuyPlatform.Controllers
         /// <returns></returns>
         public IActionResult GetListByKey(string key)
         {
+            IEnumerable<ClientInfo> list ;
+
             if (string.IsNullOrEmpty(key))
             {
-                return JsonOk(_clientInfoRepository.FindBy(e => e.UserId == CurrentUser.Id && e.IsDel == false).Take(8).ToList());
+                list = _clientInfoRepository.FindBy(e => e.UserId == CurrentUser.Id && e.IsDel == 0).Take(8).ToList();
             }
             else
             {
-                return JsonOk(_clientInfoRepository.FindBy(e => e.UserId == CurrentUser.Id && e.IsDel == false && e.ClientName.Contains(key)).Take(8).ToList());
+                list = _clientInfoRepository.FindBy(e => e.UserId == CurrentUser.Id && e.IsDel == 0 && e.ClientName.Contains(key)).Take(8).ToList();
             }
+
+            List<dynamic> dyList = new List<dynamic>();
+
+            list.ToList().ForEach(e =>
+            {
+                dyList.Add(new { value = e.ClientName, id = e.Id});
+            });
+
+            return JsonOk(dyList);
         }
     }
 }

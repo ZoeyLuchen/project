@@ -11,10 +11,16 @@ namespace InsteadBuyPlatform.Controllers
     public class OrderInfoController : BaseController
     {
         IOrderInfoRepository _orderInfoRepository;
+        IOrderGoodsRepository _orderGoodsRepository;
+        IClientInfoRepository _clientInfoRepository;
 
-        public OrderInfoController(IOrderInfoRepository orderInfoRepository)
+        public OrderInfoController(IOrderInfoRepository orderInfoRepository, 
+            IOrderGoodsRepository orderGoodsRepository,
+            IClientInfoRepository clientInfoRepository)
         {
             _orderInfoRepository = orderInfoRepository;
+            _orderGoodsRepository = orderGoodsRepository;
+            _clientInfoRepository = clientInfoRepository;
         }
 
         /// <summary>
@@ -46,6 +52,62 @@ namespace InsteadBuyPlatform.Controllers
         public IActionResult GetDetailData(int id)
         {
             return Json("");
+        }
+
+        [HttpGet]
+        public IActionResult AddOrder()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 下单
+        /// </summary>
+        /// <param name="orderInfoView"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult AddOrder([FromBody]OrderInfoView orderInfoView)
+        {
+            var userId = CurrentUser.Id;
+
+            if (string.IsNullOrEmpty(orderInfoView.ClientName))
+            {
+                return JsonError("客户信息未填写");
+            }
+            orderInfoView.ClientName = orderInfoView.ClientName.Trim();
+            if (orderInfoView.ClientId == null)
+            {
+                var clientModel = _clientInfoRepository.FindBy(e => e.UserId == userId && e.ClientName == orderInfoView.ClientName && e.IsDel == 0);
+
+                if (clientModel.Any())
+                {
+                    return JsonError("该客户信息已存在,请直接选择");
+                }
+                else
+                {
+                    ClientInfo clientInfo = new ClientInfo() {
+                        ClientName = orderInfoView.ClientName,
+                        UserId = userId,
+                        IsDel = 0,
+                        CreateTime = DateTime.Now,
+                        UpdateTime = DateTime.Now
+                    };
+
+                    var clientId = _clientInfoRepository.Add(clientInfo);
+                    orderInfoView.ClientId = clientId;
+                }
+            }
+
+            try
+            {
+                orderInfoView.UserId = userId;
+                _orderInfoRepository.AddOrder(orderInfoView);
+                return JsonOk("");
+            }
+            catch (Exception e)
+            {
+                return JsonError(e.Message);
+            }
         }
     }
 }

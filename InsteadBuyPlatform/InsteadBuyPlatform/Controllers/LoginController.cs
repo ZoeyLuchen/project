@@ -42,7 +42,7 @@ namespace InsteadBuyPlatform.Controllers
                 return JsonError("手机格式不正确");
             }
 
-            var model = _smsCodeInfoRepository.FindBy(e => e.IsUse == false && e.Phone == phone).FirstOrDefault();
+            var model = _smsCodeInfoRepository.FindBy(e => e.IsUse == 0 && e.Phone == phone).FirstOrDefault();
             //成本考虑，如果验证码未过期,不重新发送验证码
             if (model != null && DateTime.Now < model.ExpirationTime)
             {
@@ -56,7 +56,7 @@ namespace InsteadBuyPlatform.Controllers
                 Code = code,
                 CreateTime = DateTime.Now,
                 ExpirationTime = DateTime.Now.AddMinutes(10),
-                IsUse = false,
+                IsUse = 0,
                 Phone = phone,
                 Type = 1
             };
@@ -81,7 +81,7 @@ namespace InsteadBuyPlatform.Controllers
             {
                 return JsonError("验证码不能为空");
             }
-            var smsCodeModel = _smsCodeInfoRepository.FindBy(e => e.IsUse == false && e.Phone == phone).FirstOrDefault();
+            var smsCodeModel = _smsCodeInfoRepository.FindBy(e => e.IsUse == 0 && e.Phone == phone).FirstOrDefault();
 
             if (smsCodeModel != null && smsCodeModel.ExpirationTime < DateTime.Now)
             {
@@ -94,11 +94,11 @@ namespace InsteadBuyPlatform.Controllers
             }
             else
             {
-                smsCodeModel.IsUse = true;
+                smsCodeModel.IsUse = 1;
                 _smsCodeInfoRepository.Update(smsCodeModel);
             }
 
-            var userInfo = _userInfoRepository.GetSingle(e => e.Account == phone && e.IsDel == false);
+            var userInfo = _userInfoRepository.GetSingle(e => e.Account == phone && e.IsDel == 0);
 
             if (userInfo == null)
             {
@@ -109,7 +109,7 @@ namespace InsteadBuyPlatform.Controllers
                     Img = "",
                     InvitationCode = RandomHelper.GenerateRandomCode(6),
                     BeInvitationCode = "",
-                    IsDel = false,
+                    IsDel = 0,
                     Old = "0",
                     Sex = "",
                     UpdateTime = DateTime.Now,
