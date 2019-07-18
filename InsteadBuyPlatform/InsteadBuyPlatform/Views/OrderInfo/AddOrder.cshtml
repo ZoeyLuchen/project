@@ -1,0 +1,342 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>订单录入</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link href="~/css/app.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <style type="text/css">
+        .content {
+            margin: 0.5rem 0.8rem
+        }
+
+        .box-card {
+            width: 8.4rem
+        }
+
+            .box-card .addModel_item {
+                width: 7rem;
+            }
+
+            .box-card .addModel_Save {
+                width: 2rem;
+                margin: 0 3rem;
+            }
+
+        .pageTop {
+            margin-bottom: 0.5rem;
+        }
+
+            .pageTop .title {
+                font-size: 18px;
+                font-weight: 900
+            }
+
+            .pageTop .submitBtn {
+                float: right
+            }
+    </style>
+</head>
+<body>
+
+
+    <div class="content" id="app">
+        <el-row class="pageTop">
+            <el-col :span="12"><span class="title">订单录入</span></el-col>
+
+            <el-col :span="12">
+                <el-button type="primary" class="submitBtn" v-on:click="submitOrder" size="medium" :loading="isSubmit">保存订单</el-button>
+            </el-col>
+        </el-row>
+        <el-form ref="form" :model="form" label-width="2rem" style="width:8rem">
+            <el-form-item label="客户名称" style="width:8rem">
+                <el-autocomplete v-model.trim="form.clientName"
+                                 :fetch-suggestions="clientNameSearch"
+                                 placeholder="请输入客户名称"
+                                 v-on:select="clientNameSelect">
+                </el-autocomplete>
+            </el-form-item>
+        </el-form>
+
+        <el-table :data="form.orderGoodsList" style="width: 8rem">
+            <el-table-column label="商品名">
+                <template slot-scope="scope">
+                    <span v-text="scope.row.goodsName +'('+ scope.row.gbName+')'"></span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="gsName" label="商品规格"></el-table-column>
+            <el-table-column prop="goodsNum" label="数量"></el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <i class="el-icon-circle-close" v-on:click="deleteGoods(scope.$index)"></i>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-card class="box-card">
+            <el-form ref="addModel" :model="addModel" label-width="2rem">
+                <el-form-item label="商品品牌" class="addModel_item">
+                    <el-select v-model="addModel.gbId"
+                               filterable remote
+                               placeholder="请输入关键词"
+                               :remote-method="goodsBrandSearch"
+                               v-on:change="goodsBrandChange"
+                               :loading="loading">
+                        <el-option v-for="item in goodsBrandList"
+                                   :key="item.id"
+                                   :label="item.enBrandName+'('+item.chsBrandName+')'"
+                                   :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="商品类型" class="addModel_item">
+                    <el-select v-model="addModel.goodsTypeCode"
+                               filterable
+                               v-on:change="goodsTypeChange"
+                               placeholder="请输入关键词">
+                        <el-option v-for="item in goodsTypeList"
+                                   :key="item.id"
+                                   :label="item.typeName"
+                                   :value="item.code">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="商品名称" class="addModel_item">
+                    <el-select v-model="addModel.goodsId"
+                               filterable remote
+                               placeholder="请输入关键词"
+                               :remote-method="goodsSearch"
+                               v-on:change="goodsChange"
+                               :loading="loading">
+                        <el-option v-for="item in goodsList"
+                                   :key="item.id"
+                                   :label="item.goodsName"
+                                   :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="商品规格" class="addModel_item">
+                    <el-select v-model="addModel.gsId"
+                               v-on:change="gsChange"
+                               placeholder="请输入关键词">
+                        <el-option v-for="item in gsList"
+                                   :key="item.id"
+                                   :label="item.specificationName"
+                                   :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="数量" class="addModel_item">
+                    <el-input-number v-model="addModel.goodsNum" :min="1"></el-input-number>
+                </el-form-item>
+            </el-form>
+            <el-button type="primary" class="addModel_Save" v-on:click="addGoods">添加</el-button>
+        </el-card>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        var that;
+        var v = new Vue({
+            el: "#app",
+            data: {
+                form: {
+                    clientName: "",
+                    clientId: "",
+                    orderGoodsList: []
+                },
+                addModel: {
+                    gbId: "",
+                    gbName: "",
+                    goodsTypeCode: "",
+                    goodsTypeName: "",
+                    goodsId: "",
+                    goodsName: "",
+                    gsId: "",
+                    gsName: "",
+                    goodsNum: 1
+                },
+                goodsBrandList: [],
+                goodsTypeList: [],
+                goodsList: [],
+                gsList: [],
+                loading: false,
+                isSubmit: false
+            },
+            mounted() {
+                this.$nextTick(e => {
+                    that = this;
+                    that.getGoodsBrandList();
+                    that.GetGoodsType();
+                    //that.getGsList();
+                });
+            },
+            methods: {
+                clientNameSearch(key, cb) {
+                    axios.get("/ClientInfo/GetListByKey", {
+                        params: {
+                            key: key
+                        }
+                    }).then(res => {
+                        if (res.data.code == 200) {
+                            if (res.data.data.length == 0) {
+                                that.form.clientId = "";
+                            }
+                            cb(res.data.data);
+                        }
+                    });
+                },
+                clientNameSelect(item) {
+                    that.form.clientId = item.id;
+                    that.form.clientName = item.value;
+                },
+                getGoodsList(key) {
+                    key = key || "";
+                    that.loading = true;
+                    axios.get("/GoodsInfo/SearchGoodsList", {
+                        params: {
+                            key: key,
+                            goodsTypeCode: that.addModel.goodsTypeCode,
+                            gbId: that.addModel.gbId
+                        }
+                    }).then(res => {
+                        if (res.data.code == 200) {
+                            that.goodsList = res.data.data;
+                        }
+                        that.loading = false;
+                        console.log(res);
+                    });
+                },
+                goodsSearch(key) {
+                    that.getGoodsList(key);
+                },
+                getGoodsBrandList(key) {
+                    key = key || "";
+                    that.loading = true;
+                    axios.get("/GoodsBrand/GetTop8", {
+                        params: {
+                            key: key
+                        }
+                    }).then(res => {
+                        if (res.data.code == 200) {
+                            that.goodsBrandList = res.data.data;
+                        }
+                        that.loading = false;
+                        console.log(res);
+                    });
+                },
+                goodsBrandSearch(key) {
+                    that.getGoodsBrandList(key);
+                },
+                GetGoodsType() {
+                    axios.get("/GoodsType/GetAllList").then(res => {
+                        if (res.data.code == 200) {
+                            that.goodsTypeList = res.data.data;
+                        }
+                        console.log(res);
+                    });
+                },
+                getGsList() {
+                    axios.get("/GoodsInfo/GetSpecificationList?goodsId=" + that.addModel.goodsId).then(res => {
+                        if (res.data.code == 200) {
+                            that.gsList = res.data.data;
+                        }
+                        console.log(res);
+                    });
+                },
+                goodsBrandChange(val) {
+                    var item = that.goodsBrandList.find(e => { return e.id == val });
+                    that.addModel.gbName = item.enBrandName;
+                    that.addModel.goodsId = "";
+                    that.addModel.gsId = "";
+                    that.goodsList = [];
+                    that.gsList = [];
+                    that.getGoodsList();
+                },
+                goodsTypeChange(val) {
+                    var item = that.goodsTypeList.find(e => { return e.code == val });
+                    that.addModel.goodsTypeName = item.typeName;
+                    that.addModel.goodsId = "";
+                    that.addModel.gsId = "";
+                    that.goodsList = [];
+                    that.gsList = [];
+                    that.getGoodsList();
+                },
+                goodsChange(val) {
+                    var item = that.goodsList.find(e => { return e.id == val });
+                    that.addModel.goodsName = item.goodsName;
+                    that.getGsList();
+                },
+                gsChange(val) {
+                    var item = that.gsList.find(e => { return e.id == val });
+                    that.addModel.gsName = item.specificationName;
+                },
+                addGoods() {
+                    if (that.addModel.goodsId == null || that.addModel.goodsId == "") {
+                        that.$message.error('商品不能为空')
+                        return;
+                    }
+
+                    if (that.addModel.gsId == null || that.addModel.gsId == "") {
+                        that.$message.error('规格不能为空')
+                        return;
+                    }
+
+                    that.form.orderGoodsList.push(that.addModel);
+                    that.initialization();
+                },
+                initialization() {
+                    that.addModel = {
+                        gbId: "",
+                        gbName: "",
+                        goodsTypeCode: "",
+                        goodsTypeName: "",
+                        goodsId: "",
+                        goodsName: "",
+                        gsId: "",
+                        gsName: "",
+                        goodsNum: 1
+                    };
+                    that.goodsBrandList = [];
+                    that.goodsList = [];
+                    that.gsList = [];
+                },
+                deleteGoods(index) {
+                    console.log(index);
+                    that.form.orderGoodsList.splice(index, 1)
+                },
+                submitOrder() {
+                    if (that.form.clientName == null || that.form.clientName == "") {
+                        that.$message.error('客户不能为空')
+                        return;
+                    }
+                    if (that.form.orderGoodsList.length == 0) {
+                        that.$message.error('未添加商品')
+                        return;
+                    }
+                    that.isSubmit = true;
+                    axios.post("/OrderInfo/AddOrder", that.form)
+                        .then(res => {
+                            if (res.data.code == 200) {
+                                that.$message.success('下单成功');
+                                that.initialization();
+                            }
+                            that.isSubmit = false;
+                        });
+                }
+            },
+        });
+    </script>
+</body>
+</html>
+
+
