@@ -1,27 +1,91 @@
 ﻿@*@{
-    Layout = null;
-}*@
+        Layout = null;
+    }*@
 @{
     ViewBag.Title = "品牌管理";
 }
 
 <h2 class="page-title">
     <i class="shuxian"></i>
-    <span>品牌管理<i></i></span>
+    <span>品牌管理<i></i></span>    
 </h2>
-<div>
-</div>
+<div class="mb20">
+    品牌名称：
+    <el-input placeholder="品牌名称" v-model="goodsBrandName" class="input220 mr20"></el-input>
+    状态：
+    <el-select v-model="isDel" placeholder="状态" class="select120 mr20">
+        <el-option label="全部" value="-1"></el-option>
+        <el-option label="未删除" value="0"></el-option>
+        <el-option label="已删除" value="1"></el-option>
+    </el-select>
 
-<script type="text/javascript">
-    var app = new Vue({
-        el: "#app",
-        data: {},
-        mounted: function () {
-            this.$nextTick(function () {
-                console.log(111);
-            });
-        },
-        methods: {
-        }
-    })
-</script>
+    <el-button type="primary" class="mr30">搜索</el-button>
+    <el-button type="primary" class="fr mr30" v-on:click="dialogShow = true">新增品牌</el-button>
+</div>
+<div>
+    <el-table :data="tableData" stripe class="tableList">
+        <el-table-column prop="date" label="序号" width="80"></el-table-column>
+        <el-table-column prop="date" label="品牌中文名称" width=""></el-table-column>
+        <el-table-column prop="date" label="品牌英文名称" width=""></el-table-column>
+        <el-table-column prop="date" label="创建时间" width="180"></el-table-column>
+        <el-table-column prop="date" label="操作" width="120">
+            <template slot-scope="scope">
+                <i class="el-icon-edit mr20" title="编辑"></i>
+                <i class="el-icon-delete" title="删除"></i>
+            </template>
+        </el-table-column>
+    </el-table>
+    <el-pagination v-on:size-change="handleSizeChange"
+                   class="pagination"
+                   v-on:current-change="handleCurrentChange"
+                   :current-page.sync="pageIndex"
+                   :page-size="pageSize"
+                   layout="prev, pager, next, jumper"
+                   :total="total">
+    </el-pagination>
+</div>
+<el-dialog :title="dialogTitle" :visible.sync="dialogShow" width ="500">
+    <el-form :model="model">
+        <el-form-item label="品牌中文名称" :label-width="160">
+            <el-input v-model="model.name" class="input260"></el-input>
+        </el-form-item>
+        <el-form-item label="品牌英文名称" :label-width="160">
+            <el-input v-model="model.name" class="input260"></el-input>
+        </el-form-item>
+    </el-form>
+    <div class="taCenter">
+        <el-button type="primary">保存</el-button>
+    </div>
+</el-dialog>
+
+@section Scripts{
+    <script type="text/javascript">
+        var app = new Vue({
+            el: "#app",
+            data: {
+                goodsBrandName: "",
+                isDel: "-1",
+                tableData: [{}],
+                pageIndex: 1,
+                pageSize: 10,
+                total: 100,
+                dialogShow: false,
+                dialogTitle:"新增品牌",
+                model: {}
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+                    console.log(111);
+                });
+            },
+            methods: {
+                handleSizeChange(pageIndex) {
+
+                },
+                handleCurrentChange(pageIndex) {
+
+                }
+            }
+        })
+    </script>
+}
