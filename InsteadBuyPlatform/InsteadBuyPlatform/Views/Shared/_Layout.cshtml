@@ -19,48 +19,88 @@
     <meta name="msapplication-tap-highlight" content="no"><!-- windows phone 点击无高光 -->
     <meta name="apple-mobile-web-app-capable" content="yes"><!-- ios 开启对web app程序的支持 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- ios 改变顶部状态条的颜色 -->
-    <title>@ViewData["Title"] - InsteadBuyPlatform</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="~/css/site.css" />
+    <script type="text/javascript" src="~/lib/vue-v2.6.8.min.js"></script>
     @RenderSection("Css", required: false)
 </head>
 <body>
-    <el-container>
-        <el-header id="headerApp" style="background-color:#fff; margin:0px 60px">
-            <el-row>
-                <el-col :span="20">
-                    <el-menu :default-active="activeIndex"
-                             class="el-menu-demo"
-                             mode="horizontal"
-                             v-on:select="handleSelect">
-                        <el-menu-item index="1">处理中心</el-menu-item>
-                        <el-menu-item index="2"><a href="/OrderInfo/ManageIndex">订单管理</a></el-menu-item>
-                        <el-submenu index="3">
-                            <template slot="title">
-                                统计分析
-                            </template>
-                            <el-menu-item index="2-1">统计分析1</el-menu-item>
-                            <el-menu-item index="2-2">统计分析2</el-menu-item>
-                            <el-menu-item index="2-3">统计分析3</el-menu-item>
-                        </el-submenu>
-                    </el-menu>
-                </el-col>
-                <el-col :span="4" style="text-align:center;    border-bottom: solid 1px #e6e6e6;height:61px">
-                    <span>退出登录</span>
-                </el-col>
-            </el-row>
-        </el-header>
-        <div style="margin:0px 60px;padding: 30px 30px;">
+    <div class="sys-header" id="headerApp">
+        <span>退出登录</span>
+    </div>
+    <div class="sys-aside" id="asideApp">
+        <el-menu :default-active="activeIndex"
+                 class="el-menu-demo"
+                 v-on:select="handleSelect">
+            <el-menu-item index="1">首页</el-menu-item>
+            <el-submenu index="2">
+                <template slot="title">
+                    基础信息管理
+                </template>
+                <el-menu-item index="2-1">品牌管理</el-menu-item>
+                <el-menu-item index="2-2">品类管理</el-menu-item>
+                <el-menu-item index="2-3">客户管理</el-menu-item>
+            </el-submenu>
+            <el-menu-item index="3">商品管理</el-menu-item>
+            <el-menu-item index="4">订单管理</el-menu-item>
+            <el-menu-item index="5">报表管理</el-menu-item>
+            <el-submenu index="6">
+                <template slot="title">
+                    系统管理
+                </template>
+                <el-menu-item index="6-1">角色管理</el-menu-item>
+                <el-menu-item index="6-2">权限管理</el-menu-item>
+                <el-menu-item index="6-3">用户管理</el-menu-item>
+            </el-submenu>
+        </el-menu>
+    </div>
+    <div class="sys-mian" id="app">
+        <div class="content" id="contentDiv">
             @RenderBody()
-        </div>
-    </el-container>
+        </div>       
+    </div>
 
-    <script type="text/javascript" src="~/lib/vue-v2.6.8.min.js"></script>
+
+
     <script type="text/javascript" src="~/lib/axios.min.js"></script>
     <script type="text/javascript" src="~/js/site.js"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script type="text/javascript" src="~/js/qs.js"></script>
     <script type="text/javascript">
+        var asideApp = new Vue({
+            el: "#asideApp",
+            data: {
+                activeIndex: '1'
+            },
+            mounted: function () {
+                this.$nextTick(function () {
+
+                });
+            },
+            methods: {
+                handleSelect(index, indexPath) {
+                    let url = "";
+                    switch (index) {
+                        case "1":
+                            url = "/Home/home";
+                            break;
+                        case "2-1":
+                            url = "/GoodsBrand/Index";
+                            break;
+                        default:
+                            url = "/Home/home";
+                            break;
+                    }
+
+                    this.urlJump(url);
+                },
+                urlJump(url) {
+                    document.location.href = url;
+                }
+            }
+        });
+
         var headerApp = new Vue({
             el: "#headerApp",
             data: {
@@ -71,8 +111,7 @@
 
                 });
             },
-            methods: {
-                handleSelect: function () { }
+            methods: {               
             }
         })
     </script>

@@ -1,42 +1,36 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
-body {
-    padding-top: 10px;
-    padding-bottom: 20px;
-}
+body { margin: 0px auto }
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
+.body-content { padding-left: 15px; padding-right: 15px; }
 
 /* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
+.carousel-caption p { font-size: 20px; line-height: 1.4; }
 
 /* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
+.carousel-inner .item img[src$=".svg"] { width: 100%; }
 
 /* QR code generator */
-#qrCode {
-    margin: 15px;
-}
+#qrCode { margin: 15px; }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+    .carousel-caption { display: none; }
 }
 
-a {
-    color: #409eff;
-    text-decoration: none;
-}
+a { color: #409eff; text-decoration: none; }
+
+/*模板页*/
+.sys-header { height: 60px; width: 100%; position: fixed; z-index: 1;background-color:#ffffff }
+.sys-footer { }
+.sys-aside { width: 200px; position: fixed; padding-top: 60px; height: 100%; background-color: #32dfa2 }
+.sys-mian { padding: 80px 20px 0px 220px; height: 100%; background-color: #ccc;box-sizing:border-box }
+.sys-mian .content { width: 100%; height: 100%; background-color: #ffffff;padding:20px }
+.el-menu-demo { background-color: #32dfa2 }
+
+.page-title { padding-bottom: 8px; border-bottom: 2px solid #358ef2; margin:0px 0px 20px 0px; font-size: 18px; font-weight: 400; }
+.shuxian { display: inline-block; width: 3px; height: 24px; background-color: #358ef2; }
+.page-title span { vertical-align: top; }
