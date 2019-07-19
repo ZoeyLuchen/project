@@ -104,9 +104,19 @@ namespace InsteadBuyPlatform.Controllers
             try
             {
                 var newList = list.Where(e => e.Id == 0).ToList();
+                newList.ForEach(e =>
+                {
+                    e.CreateBy = e.UpdateBy = CurrentUser.Id;
+                    e.CreateTime = e.UpdateTime = DateTime.Now;
+                });
                 _goodsSpecificationRepository.BatchAdd(newList);
 
                 var modifyList = list.Where(e => e.Id != 0).ToList();
+                modifyList.ForEach(e =>
+                {
+                    e.UpdateBy = CurrentUser.Id;
+                    e.UpdateTime = DateTime.Now;
+                });
                 _goodsSpecificationRepository.BatchUpdate(modifyList);
 
                 return JsonOk("");

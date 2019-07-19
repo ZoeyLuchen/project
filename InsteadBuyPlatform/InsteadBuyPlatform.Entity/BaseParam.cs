@@ -4,8 +4,7 @@ using System.Text;
 
 namespace InsteadBuyPlatform.Entity
 {
-    public interface IEntityBase
+    public class BaseParam
     {
-        int Id { get; set; }
     }
 }

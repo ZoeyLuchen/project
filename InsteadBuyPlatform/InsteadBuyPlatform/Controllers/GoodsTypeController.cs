@@ -32,7 +32,8 @@ namespace InsteadBuyPlatform.Controllers
             try
             {
                 _goodsTypeRepository.Add(model);
-                model.CreateTime = DateTime.Now;
+                model.UpdateTime = model.CreateTime = DateTime.Now;
+                model.UpdateBy = model.CreateBy = CurrentUser.Id;
                 if (string.IsNullOrEmpty(model.PCode))
                 {
                     model.Code = (_goodsTypeRepository.Count(e => e.PCode == "") + 1).ToString("000");
@@ -61,6 +62,8 @@ namespace InsteadBuyPlatform.Controllers
                 var oldModel = _goodsTypeRepository.GetSingle(model.Id);
                 oldModel.TypeName = model.TypeName;
                 oldModel.IsDel = model.IsDel;
+                oldModel.UpdateBy = CurrentUser.Id;
+                oldModel.UpdateTime = DateTime.Now;
                 _goodsTypeRepository.Update(oldModel);
                 return JsonOk("");
             }

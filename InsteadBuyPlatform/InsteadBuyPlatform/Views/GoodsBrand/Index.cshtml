@@ -19,19 +19,19 @@
         <el-option label="已删除" value="1"></el-option>
     </el-select>
 
-    <el-button type="primary" class="mr30">搜索</el-button>
-    <el-button type="primary" class="fr mr30" v-on:click="dialogShow = true">新增品牌</el-button>
+    <el-button type="primary" class="mr30" v-on:click="search">搜索</el-button>
+    <el-button type="primary" class="fr mr30" v-on:click="addShowDialog">新增品牌</el-button>
 </div>
 <div>
     <el-table :data="tableData" stripe class="tableList">
-        <el-table-column prop="date" label="序号" width="80"></el-table-column>
-        <el-table-column prop="date" label="品牌中文名称" width=""></el-table-column>
-        <el-table-column prop="date" label="品牌英文名称" width=""></el-table-column>
-        <el-table-column prop="date" label="创建时间" width="180"></el-table-column>
-        <el-table-column prop="date" label="操作" width="120">
+        <el-table-column type="index" label="序号" width="80"></el-table-column>
+        <el-table-column prop="chsBrandName" label="品牌中文名称" width=""></el-table-column>
+        <el-table-column prop="enBrandName" label="品牌英文名称" width=""></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+        <el-table-column label="操作" width="120" :v-if="isDel==0">
             <template slot-scope="scope">
-                <i class="el-icon-edit mr20" title="编辑"></i>
-                <i class="el-icon-delete" title="删除"></i>
+                <i class="el-icon-edit mr20" v-on:click="modifyShowDialog(scope.row)" title="编辑"></i>
+                <i class="el-icon-delete" v-on:click="del(scope.row)" title="删除"></i>
             </template>
         </el-table-column>
     </el-table>
@@ -47,25 +47,26 @@
 <el-dialog :title="dialogTitle" :visible.sync="dialogShow" width ="500">
     <el-form :model="model">
         <el-form-item label="品牌中文名称" :label-width="160">
-            <el-input v-model="model.name" class="input260"></el-input>
+            <el-input v-model.trim="model.chsBrandName" class="input260"></el-input>
         </el-form-item>
         <el-form-item label="品牌英文名称" :label-width="160">
-            <el-input v-model="model.name" class="input260"></el-input>
+            <el-input v-model.trim="model.enBrandName" class="input260"></el-input>
         </el-form-item>
     </el-form>
     <div class="taCenter">
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" v-on:click="save">保存</el-button>
     </div>
 </el-dialog>
 
 @section Scripts{
     <script type="text/javascript">
+        var that;
         var app = new Vue({
             el: "#app",
             data: {
                 goodsBrandName: "",
-                isDel: "-1",
-                tableData: [{}],
+                isDel: "0",
+                tableData: [],
                 pageIndex: 1,
                 pageSize: 10,
                 total: 100,
@@ -74,16 +75,110 @@
                 model: {}
             },
             mounted: function () {
-                this.$nextTick(function () {
-                    console.log(111);
+                this.$nextTick(e=> {
+                    that = this;
+                    that.searchList();
                 });
             },
             methods: {
-                handleSizeChange(pageIndex) {
+                search() {
+                    that.pageIndex = 1;
+                    that.searchList();
+                },
+                searchList() { 
+                    axios.get("/GoodsBrand/SearchListByPage", {
+                        params: {
+                            goodsBrandName: that.goodsBrandName,
+                            isDel: that.isDel,
+                            pageIndex: that.pageIndex,
+                            pageSize: that.pageSize
+                        }
+                    }).then(res => { 
+                        if (res.status == 200) {
+                            res.data.items.forEach(e => { 
+                                e.createTime = dateFtt(e.createTime);
+                            })
+                            that.tableData = res.data.items;
+                            that.total = res.data.totalCount;                            
+                        }
+                    })
+                },
+                addShowDialog() {
+                    that.dialogShow = true;
+                    that.model = { chsBrandName: "", enBrandName:"",isDel:0};
+                    that.dialogTitle = "新增品牌";
+                },
+                modifyShowDialog(item) {
+                    that.model = JSON.parse(JSON.stringify(item));
+                    that.dialogTitle = "修改品牌";
+                    that.dialogShow = true;
+                },
+                add(item) { 
+                    axios.post("/GoodsBrand/Add", item).then(res => {
+                        if (res.status == 200) {
+                            if (res.data.code == 200) {
+                                that.$message.success("添加成功")
+                                that.pageIndex = 1;
+                                that.searchList();
+                            } else { 
+                                that.$message.error(res.data.message)
+                            }
+                           
+                        } else {
+                            that.$message.error("添加失败")
+                        }
+                    })
+                },
+                modify(item) { 
+                    axios.post("/GoodsBrand/Modify", item).then(res => {
+                        if (res.status == 200) {
+                            if (res.data.code == 200) {
+                                that.$message.success("修改成功")
+                                that.searchList();
+                            } else {
+                                that.$message.error(res.data.message)
+                            }
+                        } else {
+                            that.$message.error("修改失败")
+                        }
+                    })
+                },
+                del(item) { 
+                    item.isDel = 1;
+                    axios.post("/GoodsBrand/Modify", item).then(res => { 
+                        if (res.status == 200 && res.data.code == 200) {
+                            that.$message.success("删除成功")
+                            that.searchList();
+                        } else { 
+                            that.$message.error("删除失败")
+                        }
+                    })
+                },
+                save() {
+                    if (that.model.chsBrandName.length == 0) { 
+                        that.$message.warning("中文名不能为空")
+                        return;
+                    };
+                    if (that.model.enBrandName.length == 0) {
+                        that.$message.warning("英文名不能为空")
+                        return;
+                    }
 
+                    if (that.model.id == undefined) {
+                        that.add(that.model);
+                    } else {
+                        that.modify(that.model);
+                    }
+
+                    that.dialogShow = false;
+                },
+                handleSizeChange(pageIndex) {
+                    that.pageIndex = pageIndex;
+                    that.searchList();
                 },
                 handleCurrentChange(pageIndex) {
-
+                    that.pageIndex = pageIndex;
+                    that.searchList();
                 }
             }
         })

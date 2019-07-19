@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InsteadBuyPlatform.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -38,5 +39,7 @@ namespace InsteadBuyPlatform.IRepository
         bool Any(Expression<Func<T, bool>> predicate);
 
         void Commit();
+
+        PageModel<T> SearchListByPage(PageInfo pageInfo, Expression<Func<T, bool>> predicate=null);
     }
 }

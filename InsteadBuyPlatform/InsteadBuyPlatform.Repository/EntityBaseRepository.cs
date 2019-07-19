@@ -7,6 +7,7 @@ using InsteadBuyPlatform.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using EFCore.BulkExtensions;
+using InsteadBuyPlatform.Entity;
 
 namespace InsteadBuyPlatform.Repository
 {
@@ -93,6 +94,7 @@ namespace InsteadBuyPlatform.Repository
         {
             EntityEntry dbEntityEntry = _context.Entry<T>(entity);
             dbEntityEntry.State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public virtual void BatchUpdate(List<T> list)
@@ -108,6 +110,7 @@ namespace InsteadBuyPlatform.Repository
         {
             EntityEntry dbEntityEntry = _context.Entry<T>(entity);
             dbEntityEntry.State = EntityState.Deleted;
+            _context.SaveChanges();
         }
 
         public virtual void DeleteWhere(Expression<Func<T, bool>> predicate)
@@ -117,6 +120,7 @@ namespace InsteadBuyPlatform.Repository
             {
                 _context.Entry<T>(entity).State = EntityState.Deleted;
             }
+            _context.SaveChanges();
         }
 
         public virtual bool Any(Expression<Func<T, bool>> predicate)
@@ -126,6 +130,26 @@ namespace InsteadBuyPlatform.Repository
         public virtual void Commit()
         {
             _context.SaveChanges();
-        }    
+        }
+
+        public virtual PageModel<T> SearchListByPage(PageInfo pageInfo, Expression<Func<T, bool>> predicate = null)
+        {
+            int count = 0;
+            List<T> list = null;
+            if (predicate == null)
+            {
+                count = _context.Set<T>().Count();
+                list = _context.Set<T>().Skip((pageInfo.PageIndex - 1) * pageInfo.PageSize).Take(pageInfo.PageSize).OrderByDescending(e => e.Id).ToList();
+            }
+            else
+            {
+                count = _context.Set<T>().Count(predicate);
+                list = _context.Set<T>().Where(predicate).Skip((pageInfo.PageIndex - 1) * pageInfo.PageSize).Take(pageInfo.PageSize).OrderByDescending(e => e.Id).ToList();
+            }
+
+            PageModel<T> result = new PageModel<T>(list, pageInfo.PageIndex, pageInfo.PageSize, count);
+
+            return result;
+        }
     }
 }

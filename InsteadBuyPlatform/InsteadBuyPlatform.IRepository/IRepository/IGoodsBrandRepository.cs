@@ -10,5 +10,6 @@ namespace InsteadBuyPlatform.IRepository
     /// </summary>
     public interface IGoodsBrandRepository : IEntityBaseRepository<GoodsBrand>
     {
+        PageModel<GoodsBrand> SearchListByPage(GoodsBrandParam param, PageInfo pageInfo);
     }
 }
