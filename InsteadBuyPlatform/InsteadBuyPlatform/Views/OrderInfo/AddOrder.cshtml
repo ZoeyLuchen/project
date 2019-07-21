@@ -85,8 +85,8 @@
             <el-form ref="addModel" :model="addModel" label-width="2rem">
                 <el-form-item label="商品品牌" class="addModel_item">
                     <el-select v-model="addModel.gbId"
-                               filterable remote
-                               placeholder="请输入关键词"
+                               filterable remote clearable
+                               placeholder="选择品牌"
                                :remote-method="goodsBrandSearch"
                                v-on:change="goodsBrandChange"
                                :loading="loading">
@@ -99,9 +99,9 @@
                 </el-form-item>
                 <el-form-item label="商品类型" class="addModel_item">
                     <el-select v-model="addModel.goodsTypeCode"
-                               filterable
+                               filterable clearable
                                v-on:change="goodsTypeChange"
-                               placeholder="请输入关键词">
+                               placeholder="选择品类">
                         <el-option v-for="item in goodsTypeList"
                                    :key="item.id"
                                    :label="item.typeName"

@@ -11,5 +11,7 @@ namespace InsteadBuyPlatform.IRepository
     public interface IGoodsInfoRepository : IEntityBaseRepository<GoodsInfo>
     {
         List<GoodsInfo> SearchGoodsList(GoodsSearchModel searchModel);
+
+        PageModel<GoodsInfoView> SearchListByPage(GoodsInfoParam param, PageInfo pageInfo);
     }
 }

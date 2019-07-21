@@ -7,23 +7,18 @@ namespace InsteadBuyPlatform.Entity
     public class OrderInfoParam
     {
         /// <summary>
-        /// 订单状态状态
+        /// 所属用户
         /// </summary>
-        public int Status { get; set; }
+        public int UserId { get; set; }
 
         /// <summary>
-        /// 收货人
+        /// 客户名称
         /// </summary>
-        public string Consignee { get; set; }
+        public string ClientName { get; set; }
 
-        /// <summary>
-        /// 收货人电话
-        /// </summary>
-        public string Phone { get; set; }
-
-        public DateTime? BeginTime { get; set; }
+        public DateTime? BeginDate { get; set; }
 
 
-        public DateTime? EndTime { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

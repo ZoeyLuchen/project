@@ -33,27 +33,58 @@ namespace InsteadBuyPlatform.Controllers
         }
 
         /// <summary>
-        /// 根据查询条件获取分页数据
+        /// 查询数据列表
         /// </summary>
-        /// <param name="pageInfo"></param>
         /// <param name="param"></param>
+        /// <param name="pageInfo"></param>
         /// <returns></returns>
-        public IActionResult GetListByPages(PageInfo pageInfo, OrderInfoParam param)
+        public IActionResult SearchListByPage(OrderInfoParam param, PageInfo pageInfo)
         {
-            var result = _orderInfoRepository.GetListByPages(pageInfo,param);
-            return JsonOk(result);
+            param.UserId = CurrentUser.Id;
+            if(param.BeginDate != null)
+                param.BeginDate = DateTime.Parse(string.Format("{0:yyyy-MM-dd}", param.BeginDate) + " 00:00:00");
+            if (param.EndDate != null)
+                param.EndDate = DateTime.Parse(string.Format("{0:yyyy-MM-dd}", param.EndDate) + " 23:59:59");
+
+            var result = _orderInfoRepository.SearchListByPage(param, pageInfo);
+            return Json(result);
         }
 
         /// <summary>
-        /// 获取订单明细数据
+        /// 查询数据列表
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="param"></param>
+        /// <param name="pageInfo"></param>
         /// <returns></returns>
-        public IActionResult GetDetailData(int id)
+        public IActionResult GetOrderGoodsList(int orderId)
         {
-            return Json("");
+            var result = _orderInfoRepository.GetOrderGoodsList(orderId);
+            return Json(result);
         }
 
+        /// <summary>
+        /// 删除订单
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public IActionResult DelOrderInfo([FromBody] OrderInfo model)
+        {
+            try
+            {
+                var oldModel = _orderInfoRepository.GetSingle(e => e.Id == model.Id);
+                oldModel.IsDel = 1;
+                _orderInfoRepository.Update(oldModel);
+
+                return JsonOk("");
+            }
+            catch (Exception ex)
+            {
+                return JsonError(ex.Message);
+            }
+        }
+
+
+        #region 移动端接口
         [HttpGet]
         public IActionResult AddOrder()
         {
@@ -85,7 +116,8 @@ namespace InsteadBuyPlatform.Controllers
                 }
                 else
                 {
-                    ClientInfo clientInfo = new ClientInfo() {
+                    ClientInfo clientInfo = new ClientInfo()
+                    {
                         ClientName = orderInfoView.ClientName,
                         UserId = userId,
                         IsDel = 0,
@@ -109,5 +141,6 @@ namespace InsteadBuyPlatform.Controllers
                 return JsonError(e.Message);
             }
         }
+        #endregion
     }
 }

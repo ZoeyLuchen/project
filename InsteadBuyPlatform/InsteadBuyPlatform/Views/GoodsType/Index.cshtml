@@ -2,16 +2,16 @@
         Layout = null;
     }*@
 @{
-    ViewBag.Title = "品牌管理";
+    ViewBag.Title = "品类管理";
 }
 
 <h2 class="page-title">
     <i class="shuxian"></i>
-    <span>品牌管理<i></i></span>    
+    <span>品类管理<i></i></span>
 </h2>
 <div class="mb20">
-    品牌名称：
-    <el-input placeholder="品牌名称" v-model="goodsBrandName" class="input220 mr20"></el-input>
+    品类名称：
+    <el-input placeholder="品类名称" v-model="typeName" class="input220 mr20"></el-input>
     状态：
     <el-select v-model="isDel" placeholder="状态" class="select120 mr20">
         <el-option label="全部" value="-1"></el-option>
@@ -20,16 +20,15 @@
     </el-select>
 
     <el-button type="primary" class="mr30" v-on:click="search">搜索</el-button>
-    <el-button type="primary" class="fr mr30" v-on:click="addShowDialog">新增品牌</el-button>
+    <el-button type="primary" class="fr mr30" v-on:click="addShowDialog">新增品类</el-button>
 </div>
 <div>
     <el-table :data="tableData" stripe class="tableList">
         <el-table-column type="index" label="序号" width="80"></el-table-column>
-        <el-table-column prop="chsBrandName" label="品牌中文名称" width=""></el-table-column>
-        <el-table-column prop="enBrandName" label="品牌英文名称" width=""></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
-        <el-table-column label="操作" width="120" :v-if="isDel==0">
-            <template slot-scope="scope">
+        <el-table-column prop="typeName" label="品类名称" width=""></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" width="220"></el-table-column>
+        <el-table-column label="操作" width="120" v-if="isDel==0">
+            <template slot-scope="scope" >
                 <i class="el-icon-edit mr20" v-on:click="modifyShowDialog(scope.row)" title="编辑"></i>
                 <i class="el-icon-delete" v-on:click="del(scope.row)" title="删除"></i>
             </template>
@@ -44,13 +43,10 @@
                    :total="total">
     </el-pagination>
 </div>
-<el-dialog :title="dialogTitle" :visible.sync="dialogShow" width ="500">
-    <el-form :model="model">
-        <el-form-item label="品牌中文名称" :label-width="140">
-            <el-input v-model.trim="model.chsBrandName" class="input260"></el-input>
-        </el-form-item>
-        <el-form-item label="品牌英文名称" :label-width="140">
-            <el-input v-model.trim="model.enBrandName" class="input260"></el-input>
+<el-dialog :title="dialogTitle" :visible.sync="dialogShow" :close-on-click-modal="false" width="500">
+    <el-form :model="model" :rules="rules" ref="ruleForm">
+        <el-form-item label="品类名称" prop="typeName" :label-width="140">
+            <el-input v-model.trim="model.typeName" class="input260"></el-input>
         </el-form-item>
     </el-form>
     <div class="taCenter">
@@ -64,18 +60,23 @@
         var app = new Vue({
             el: "#app",
             data: {
-                goodsBrandName: "",
+                typeName: "",
                 isDel: "0",
                 tableData: [],
                 pageIndex: 1,
                 pageSize: 10,
                 total: 0,
                 dialogShow: false,
-                dialogTitle:"新增品牌",
-                model: {}
+                dialogTitle:"新增品类",
+                model: {},
+                rules: {
+                    typeName: [
+                        { required: true, message: '不能为空', trigger: 'blur' },
+                    ]
+                }
             },
             mounted: function () {
-                asideApp.activeIndex = "2-1";
+                asideApp.activeIndex = "2-2";
                 this.$nextTick(e=> {
                     that = this;
                     that.searchList();
@@ -86,52 +87,52 @@
                     that.pageIndex = 1;
                     that.searchList();
                 },
-                searchList() { 
-                    axios.get("/GoodsBrand/SearchListByPage", {
+                searchList() {
+                    axios.get("/GoodsType/SearchListByPage", {
                         params: {
-                            goodsBrandName: that.goodsBrandName,
+                            typeName: that.typeName,
                             isDel: that.isDel,
                             pageIndex: that.pageIndex,
                             pageSize: that.pageSize
                         }
-                    }).then(res => { 
+                    }).then(res => {
                         if (res.status == 200) {
-                            res.data.items.forEach(e => { 
+                            res.data.items.forEach(e => {
                                 e.createTime = dateFtt(e.createTime);
                             })
                             that.tableData = res.data.items;
-                            that.total = res.data.totalCount;                            
+                            that.total = res.data.totalCount;
                         }
                     })
                 },
                 addShowDialog() {
                     that.dialogShow = true;
-                    that.model = { chsBrandName: "", enBrandName:"",isDel:0};
-                    that.dialogTitle = "新增品牌";
+                    that.model = { typeName: "",isDel:0,pCode:"0"};
+                    that.dialogTitle = "新增品类";
                 },
                 modifyShowDialog(item) {
                     that.model = JSON.parse(JSON.stringify(item));
-                    that.dialogTitle = "修改品牌";
+                    that.dialogTitle = "修改品类";
                     that.dialogShow = true;
                 },
-                add(item) { 
-                    axios.post("/GoodsBrand/Add", item).then(res => {
+                add(item) {
+                    axios.post("/GoodsType/Add", item).then(res => {
                         if (res.status == 200) {
                             if (res.data.code == 200) {
                                 that.$message.success("添加成功")
                                 that.pageIndex = 1;
                                 that.searchList();
-                            } else { 
+                            } else {
                                 that.$message.error(res.data.message)
                             }
-                           
+
                         } else {
                             that.$message.error("添加失败")
                         }
                     })
                 },
-                modify(item) { 
-                    axios.post("/GoodsBrand/Modify", item).then(res => {
+                modify(item) {
+                    axios.post("/GoodsType/Modify", item).then(res => {
                         if (res.status == 200) {
                             if (res.data.code == 200) {
                                 that.$message.success("修改成功")
@@ -145,13 +146,13 @@
                     })
                 },
                 del(item) {
-                    this.$confirm('确认删除该品牌吗？', '确认信息', {
+                    this.$confirm('确认删除该品类吗？', '确认信息', {
                         distinguishCancelAndClose: true,
                         confirmButtonText: '确认',
                         cancelButtonText: '放弃'
                     }).then(() => {
                         item.isDel = 1;
-                        axios.post("/GoodsBrand/Modify", item).then(res => {
+                        axios.post("/GoodsType/Modify", item).then(res => {
                             if (res.status == 200 && res.data.code == 200) {
                                 that.$message.success("删除成功")
                                 that.searchList();
@@ -159,25 +160,20 @@
                                 that.$message.error("删除失败")
                             }
                         })
-                    });                   
+                    });
                 },
                 save() {
-                    if (that.model.chsBrandName.length == 0) { 
-                        that.$message.warning("中文名不能为空")
-                        return;
-                    };
-                    if (that.model.enBrandName.length == 0) {
-                        that.$message.warning("英文名不能为空")
-                        return;
-                    }
+                    this.$refs["ruleForm"].validate((valid) => {
+                        if (valid) {
+                            if (that.model.id == undefined) {
+                                that.add(that.model);
+                            } else {
+                                that.modify(that.model);
+                            }
 
-                    if (that.model.id == undefined) {
-                        that.add(that.model);
-                    } else {
-                        that.modify(that.model);
-                    }
-
-                    that.dialogShow = false;
+                            that.dialogShow = false;
+                        }
+                    });
                 },
                 handleSizeChange(pageIndex) {
                     that.pageIndex = pageIndex;

@@ -25,14 +25,28 @@ namespace InsteadBuyPlatform.Controllers
         }
 
         /// <summary>
+        /// 查询数据列表
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="pageInfo"></param>
+        /// <returns></returns>
+        public IActionResult SearchListByPage(GoodsInfoParam param, PageInfo pageInfo)
+        {
+            var result = _goodsInfoRepository.SearchListByPage(param, pageInfo);
+            return Json(result);
+        }
+
+        /// <summary>
         /// 添加商品
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public IActionResult AddGoods(GoodsInfo model)
+        public IActionResult AddGoods([FromBody]GoodsInfo model)
         {
             try
             {
+               
+
                 model.CreateBy = CurrentUser.Id;
                 model.CreateTime = DateTime.Now;
                 model.IsDel = 0;
@@ -54,7 +68,7 @@ namespace InsteadBuyPlatform.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public IActionResult ModifyGoods(GoodsInfo model)
+        public IActionResult ModifyGoods([FromBody]GoodsInfo model)
         {
             try
             {
@@ -80,12 +94,12 @@ namespace InsteadBuyPlatform.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult DelGoodsInfo(int id)
+        public IActionResult DelGoodsInfo([FromBody]GoodsInfo model)
         {
             try
             {
-                var oldModel = _goodsInfoRepository.GetSingle(e => e.Id == id);
-                oldModel.IsDel = 0;
+                var oldModel = _goodsInfoRepository.GetSingle(e => e.Id == model.Id);
+                oldModel.IsDel = 1;
                 _goodsInfoRepository.Update(oldModel);
 
                 return JsonOk("");
@@ -97,13 +111,23 @@ namespace InsteadBuyPlatform.Controllers
         }
 
         /// <summary>
+        /// 根据商品Id获取所有商品规格
+        /// </summary>
+        /// <param name="goodsId"></param>
+        /// <returns></returns>
+        public IActionResult getGsList(int goodsId)
+        {
+            return Json(_goodsSpecificationRepository.FindBy(e => e.IsDel == 0 && e.GoodsId == goodsId).ToList());
+        }
+
+        /// <summary>
         /// 批量新增、修改、删除商品规格
         /// </summary>
-        public IActionResult AddOrModifyGs(List<GoodsSpecification> list)
+        public IActionResult AddOrModifyGs([FromBody]List<GoodsSpecification> list)
         {
             try
             {
-                var newList = list.Where(e => e.Id == 0).ToList();
+                var newList = list.Where(e => e.Id == 0 && e.IsDel ==0).ToList();
                 newList.ForEach(e =>
                 {
                     e.CreateBy = e.UpdateBy = CurrentUser.Id;
@@ -128,6 +152,7 @@ namespace InsteadBuyPlatform.Controllers
            
         }
 
+        #region 移动端调用
         /// <summary>
         /// 根据查询条件 查询商品列表
         /// </summary>
@@ -149,5 +174,7 @@ namespace InsteadBuyPlatform.Controllers
         {
             return JsonOk(_goodsSpecificationRepository.FindBy(e => e.GoodsId == goodsId && e.IsDel == 0));
         }
+        #endregion
+
     }
 }

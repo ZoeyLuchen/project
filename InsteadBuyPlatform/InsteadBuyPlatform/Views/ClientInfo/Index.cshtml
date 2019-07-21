@@ -1,0 +1,275 @@
+﻿@*@{
+        Layout = null;
+    }*@
+@{
+    ViewBag.Title = "客户管理";
+}
+
+<h2 class="page-title">
+    <i class="shuxian"></i>
+    <span>品牌管理<i></i></span>
+</h2>
+<div class="mb20">
+    品牌名称：
+    <el-input placeholder="客户名称|客户电话" v-model="clientName" class="input220 mr20"></el-input>
+    状态：
+    <el-select v-model="isDel" placeholder="状态" class="select120 mr20">
+        <el-option label="全部" value="-1"></el-option>
+        <el-option label="未删除" value="0"></el-option>
+        <el-option label="已删除" value="1"></el-option>
+    </el-select>
+
+    <el-button type="primary" class="mr30" v-on:click="search">搜索</el-button>
+    <el-button type="primary" class="fr mr30" v-on:click="addShowDialog">新增客户</el-button>
+</div>
+<div>
+    <el-table :data="tableData" stripe class="tableList">
+        <el-table-column type="index" label="序号" width="80"></el-table-column>
+        <el-table-column prop="clientName" label="客户名称" width="140"></el-table-column>
+        <el-table-column prop="clientPhone" label="客户电话" width="140"></el-table-column>
+        <el-table-column label="客户地址">
+            <template slot-scope="scope">
+                {{getAddress(scope.row)}}
+            </template>
+        </el-table-column>
+        <el-table-column label="操作" width="120" v-if="isDel==0">
+            <template slot-scope="scope">
+                <i class="el-icon-edit mr20" v-on:click="modifyShowDialog(scope.row)" title="编辑"></i>
+                <i class="el-icon-delete" v-on:click="del(scope.row)" title="删除"></i>
+            </template>
+        </el-table-column>
+    </el-table>
+    <el-pagination v-on:size-change="handleSizeChange"
+                   class="pagination"
+                   v-on:current-change="handleCurrentChange"
+                   :current-page.sync="pageIndex"
+                   :page-size="pageSize"
+                   layout="prev, pager, next, jumper"
+                   :total="total">
+    </el-pagination>
+</div>
+<el-dialog :title="dialogTitle" :visible.sync="dialogShow" :close-on-click-modal="false" width="500">
+    <el-form :model="model" :rules="rules" ref="ruleForm">
+        <el-form-item label="客户名称" :label-width="100" prop="clientName" >
+            <el-input v-model.trim="model.clientName" class="input320"></el-input>
+        </el-form-item>
+        <el-form-item label="客户电话" :label-width="100" prop="clientPhone">
+            <el-input v-model.trim="model.clientPhone" class="input320"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="100" prop ="address">
+            <el-cascader v-model="model.address"  
+                         :options="addressOptions" 
+                         change-on-select 
+                         clearable
+                         :props ="{value:'code',label:'name',children:'children'}"
+                         class="input320"></el-cascader>
+        </el-form-item>
+        <el-form-item label="详细地址" :label-width="100" prop ="detailedAddress">
+            <el-input v-model.trim="model.detailedAddress"  class="input320" type="textarea" :autosize="{ minRows: 2, maxRows: 2}"></el-input>
+        </el-form-item>
+    </el-form>
+    <div class="taCenter">
+        <el-button type="primary" v-on:click="save">保存</el-button>
+    </div>
+</el-dialog>
+
+@section Scripts{
+    <script src="~/js/city_code.js"></script>
+    <script type="text/javascript">
+        var that;
+        var app = new Vue({
+            el: "#app",
+            data: {
+                clientName: "",
+                isDel: "0",
+                tableData: [],
+                pageIndex: 1,
+                pageSize: 10,
+                total: 0,
+                dialogShow: false,
+                dialogTitle: "新增客户",
+                addressOptions:[],
+                model: {},
+                rules: {
+                    clientName: [
+                        { required: true, message: '请输入客户名称', trigger: 'blur' },
+                    ],
+                    clientPhone: [
+                        { required: true, message: '请输入客户电话', trigger: 'blur' },
+                        { pattern: /^1\d{10}$/, message: '客户电话格式不正确', trigger: 'blur'}
+                    ],
+                    address: [
+                        { required: true, message: '请输入客户地址', trigger: 'change' },
+                    ],
+                    detailedAddress: [
+                        { required: true, message: '请输入详细地址', trigger: 'blur' }
+                    ],
+                }
+            },
+            mounted: function () {
+                asideApp.activeIndex = "2-3";
+                this.$nextTick(e => {
+                    that = this;
+                    that.addressOptions = cityList;
+                    that.searchList();
+                });
+            },
+            computed: {
+               
+            },
+            methods: {
+                search() {
+                    that.pageIndex = 1;
+                    that.searchList();
+                },
+                searchList() {
+                    axios.get("/ClientInfo/SearchListByPage", {
+                        params: {
+                            clientName: that.clientName,
+                            isDel: that.isDel,
+                            pageIndex: that.pageIndex,
+                            pageSize: that.pageSize
+                        }
+                    }).then(res => {
+                        if (res.status == 200) {
+                            res.data.items.forEach(e => {
+                                e.createTime = dateFtt(e.createTime);
+                            })
+                            that.tableData = res.data.items;
+                            that.total = res.data.totalCount;
+                        }
+                    })
+                },
+                addShowDialog() {
+                    that.dialogShow = true;
+                    that.model = { clientName: "", clientPhone: "", address:[], detailedAddress:"", isDel: 0 };
+                    that.dialogTitle = "新增客户";
+                },
+                modifyShowDialog(item) {
+                    item.address = [];
+                    if (item.provinceCode != null) {
+                        item.address.push(item.provinceCode)
+                    }
+                    if (item.cityCode != null) {
+                        item.address.push(item.cityCode)
+                    }
+                    if (item.countyCode != null) {
+                        item.address.push(item.countyCode)
+                    }
+                    that.model = JSON.parse(JSON.stringify(item));
+                    that.dialogTitle = "修改客户";
+                    that.dialogShow = true;
+                },
+                add(item) {
+                    axios.post("/ClientInfo/Add", item).then(res => {
+                        if (res.status == 200) {
+                            if (res.data.code == 200) {
+                                that.$message.success("添加成功")
+                                that.pageIndex = 1;
+                                that.searchList();
+                            } else {
+                                that.$message.error(res.data.message)
+                            }
+
+                        } else {
+                            that.$message.error("添加失败")
+                        }
+                    })
+                },
+                modify(item) {
+                    axios.post("/ClientInfo/Modify", item).then(res => {
+                        if (res.status == 200) {
+                            if (res.data.code == 200) {
+                                that.$message.success("修改成功")
+                                that.searchList();
+                            } else {
+                                that.$message.error(res.data.message)
+                            }
+                        } else {
+                            that.$message.error("修改失败")
+                        }
+                    })
+                },
+                del(item) {
+                    this.$confirm('确认删除该客户吗？', '确认信息', {
+                        distinguishCancelAndClose: true,
+                        confirmButtonText: '确认',
+                        cancelButtonText: '放弃'
+                    }).then(() => {
+                        axios.post("/ClientInfo/Delete", { id: item.id }).then(res => {
+                            if (res.status == 200 && res.data.code == 200) {
+                                that.$message.success("删除成功")
+                                that.searchList();
+                            } else {
+                                that.$message.error("删除失败")
+                            }
+                        })
+                    });                   
+                },
+                save() {
+                    this.$refs["ruleForm"].validate((valid) => {
+                        if (valid) {
+                            var provinceCode = that.model.address[0];
+                            var cityCode = that.model.address[1];
+                            var countyCode = that.model.address[2];
+
+                            var provinceModel = undefined;
+                            if (provinceCode != undefined) {
+                                var provinceModel = that.addressOptions.find(e => {
+                                    return e.code == provinceCode;
+                                });
+                            }
+
+                            var cityModel = undefined;
+                            if (provinceModel != undefined) {
+                                var cityModel = provinceModel.children.find(e => {
+                                    return e.code == cityCode;
+                                });
+                            }
+
+                            var countyModel = undefined;
+                            if (cityModel != undefined) {
+                                var countyModel = cityModel.children.find(e => {
+                                    return e.code == countyCode;
+                                });
+                            }
+
+
+                            that.model.provinceCode = provinceCode;
+                            that.model.cityCode = cityCode;
+                            that.model.countyCode = countyCode;
+                            that.model.provinceName = provinceModel == undefined ? "" : provinceModel.name;
+                            that.model.cityName = cityModel == undefined ? "" : cityModel.name;
+                            that.model.countyName = countyModel == undefined ? "" : countyModel.name;
+
+                            if (that.model.id == undefined) {
+                                that.add(that.model);
+                            } else {
+                                that.modify(that.model);
+                            }
+
+                            that.dialogShow = false;
+                        } else {
+
+                        }
+
+                    });
+                },
+                handleSizeChange(pageIndex) {
+                    that.pageIndex = pageIndex;
+                    that.searchList();
+                },
+                handleCurrentChange(pageIndex) {
+                    that.pageIndex = pageIndex;
+                    that.searchList();
+                },
+                getAddress(row) {
+                    return (row.provinceName == null ? "" : row.provinceName) +
+                        (row.cityName == null ? "" : row.cityName) +
+                        (row.countyName == null ? "" : row.countyName) +
+                        (row.detailedAddress == null ? "" : row.detailedAddress);
+                }
+            }
+        })
+    </script>
+}

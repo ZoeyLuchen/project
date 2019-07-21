@@ -48,11 +48,11 @@ namespace InsteadBuyPlatform.Controllers
         {
             try
             {
-                if (_goodsBrandRepository.Count(e => e.EnBrandName == model.EnBrandName) > 0)
+                if (_goodsBrandRepository.Count(e => e.EnBrandName == model.EnBrandName && e.IsDel == 0) > 0)
                 {
                     return JsonError("品牌英文名重复");
                 }
-                if (_goodsBrandRepository.Count(e => e.ChsBrandName == model.ChsBrandName) > 0)
+                if (_goodsBrandRepository.Count(e => e.ChsBrandName == model.ChsBrandName && e.IsDel == 0) > 0)
                 {
                     return JsonError("品牌中文名重复");
                 }
@@ -79,11 +79,11 @@ namespace InsteadBuyPlatform.Controllers
         {
             try
             {
-                if (model.IsDel != 1 && _goodsBrandRepository.Count(e => e.Id != model.Id && e.EnBrandName == model.EnBrandName)>0)
+                if (model.IsDel != 1 && _goodsBrandRepository.Count(e => e.Id != model.Id && e.EnBrandName == model.EnBrandName && e.IsDel == 0) > 0)
                 {
                     return JsonError("品牌英文名重复");
                 }
-                if (model.IsDel != 1 && _goodsBrandRepository.Count(e => e.Id != model.Id && e.ChsBrandName == model.ChsBrandName)>0)
+                if (model.IsDel != 1 && _goodsBrandRepository.Count(e => e.Id != model.Id && e.ChsBrandName == model.ChsBrandName && e.IsDel == 0) > 0)
                 {
                     return JsonError("品牌中文名重复");
                 }
@@ -118,6 +118,16 @@ namespace InsteadBuyPlatform.Controllers
             {
                 return JsonOk(_goodsBrandRepository.FindBy(e => e.IsDel == 0 && (e.ChsBrandName.Contains(key) || e.EnBrandName.Contains(key))).Take(8).ToList());
             }
+        }
+
+        /// <summary>
+        /// 获取所有品牌
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public IActionResult GetAllList()
+        {
+            return JsonOk(_goodsBrandRepository.FindBy(e => e.IsDel == 0).ToList());
         }
     }
 }

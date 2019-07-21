@@ -7,5 +7,6 @@ namespace InsteadBuyPlatform.IRepository
 {
     public interface IClientInfoRepository : IEntityBaseRepository<ClientInfo>
     {
+        PageModel<ClientInfo> SearchListByPage(ClientInfoParam param, PageInfo pageInfo);
     }
 }

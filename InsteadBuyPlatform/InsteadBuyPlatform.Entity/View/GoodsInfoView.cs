@@ -2,33 +2,29 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace InsteadBuyPlatform.Entity.View
+namespace InsteadBuyPlatform.Entity
 {
     public class GoodsInfoView : GoodsInfo
     {
         /// <summary>
-        /// 商品Id
+        /// 中文品牌名
         /// </summary>
-        public int GoodsId { get; set; }
+        public string ChsBrandName { get; set; }
 
         /// <summary>
-        /// 商品规格Id
+        /// 英文品牌名
         /// </summary>
-        public int GsId { get; set; }
+        public string EnBrandName { get; set; }
 
         /// <summary>
-        /// 规格名称
+        /// 类型名称
         /// </summary>
-        public string SpecificationName { get; set; }
+        public string TypeName { get; set; }
 
         /// <summary>
-        /// 规格描述
+        /// 规格数量
         /// </summary>
-        public string SpecificationDesc { get; set; }
+        public Int64 GsNumber { get; set; }
 
-        /// <summary>
-        /// 价格
-        /// </summary>
-        public decimal Price { get; set; }
     }
 }

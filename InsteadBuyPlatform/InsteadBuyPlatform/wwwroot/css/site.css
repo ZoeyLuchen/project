@@ -24,20 +24,23 @@ html, body { margin: 0px; height: 100%; }
 a { color: #409eff; text-decoration: none; }
 
 /*模板页*/
-.sys-header { height: 60px; width: 100%; position: fixed; z-index: 1;background-color:#ffffff }
+.sys-header { height: 60px; width: 100%; position: fixed; z-index: 2;background-color:#ffffff }
 .sys-footer { }
-.sys-aside { width: 200px; position: fixed; padding-top: 60px; height: 100%; background-color: #32dfa2 }
-.sys-mian { padding: 80px 20px 20px 220px; height: 100%; background-color: #ccc;box-sizing:border-box;min-width:1000px }
+.sys-aside { width: 200px; position: fixed; z-index: 1; padding-top: 60px; height: 100%; background-color: #32dfa2 }
+.sys-mian { padding: 80px 20px 20px 220px; height: 100%; background-color: #ccc;box-sizing:border-box;min-width:1100px }
     .sys-mian .content { width: 100%; height: 100%; background-color: #ffffff; padding: 20px; box-sizing:border-box }
 .el-menu-demo { background-color: #32dfa2 }
 
 .page-title { padding-bottom: 8px; border-bottom: 2px solid #358ef2; margin:0px 0px 20px 0px; font-size: 18px; font-weight: 400; }
 .shuxian { display: inline-block; width: 3px; height: 24px; background-color: #358ef2; }
 .page-title span { vertical-align: top; }
+.input80, .select80 { width: 80px }
 .input120, .select120 { width: 120px }
+.input150, .select150 { width: 150px }
 .input180, .select180 { width: 180px }
 .input220, .select220 { width: 220px }
-.input260, .select260 { width: 220px }
+.input260, .select260 { width: 260px }
+.input320, .select320 { width: 320px }
 .mr20 { margin-right:20px}
 .mr30 { margin-right: 30px }
 .mb20 { margin-bottom:20px}
@@ -45,3 +48,5 @@ a { color: #409eff; text-decoration: none; }
 .tableList .el-table__empty-block { height: auto }
 .pagination { text-align: center; margin-top: 20px; }
 .taCenter { text-align:center}
+.mb0 { margin-bottom:0px;}
+.mb10 { margin-bottom: 10px; }

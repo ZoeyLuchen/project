@@ -1,0 +1,369 @@
+﻿@*@{
+        Layout = null;
+    }*@
+@{
+    ViewBag.Title = "商品管理";
+}
+
+<h2 class="page-title">
+    <i class="shuxian"></i>
+    <span>商品管理<i></i></span>
+</h2>
+<div class="mb20">
+    商品名称：
+    <el-input placeholder="商品名称" v-model="searchModel.goodsName" class="input220 mr20"></el-input>
+    品类：
+    <el-select v-model="searchModel.goodsTypeCode" class="select120 mr20"
+               filterable clearable
+               placeholder="选择品类">
+        <el-option v-for="item in goodsTypeList"
+                   :key="item.id"
+                   :label="item.typeName"
+                   :value="item.code">
+        </el-option>
+    </el-select>
+    品牌：
+    <el-select v-model="searchModel.gbId"
+               class="select120 mr20"
+               filterable clearable
+               placeholder="选择品牌">
+        <el-option v-for="item in goodsBrandList"
+                   :key="item.id"
+                   :label="item.enBrandName+'('+item.chsBrandName+')'"
+                   :value="item.id">
+        </el-option>
+    </el-select>
+    <el-button type="primary" class="mr30" v-on:click="search">搜索</el-button>
+    <el-button type="primary" class="fr mr30" v-on:click="addShowDialog">新增商品</el-button>
+</div>
+<div>
+    <el-table :data="tableData" stripe class="tableList">
+        <el-table-column type="index" label="序号" width="80"></el-table-column>
+        <el-table-column prop="goodsName" label="商品名称" width=""></el-table-column>
+        <el-table-column prop="chsBrandName" label="所属品牌" width="140"></el-table-column>
+        <el-table-column prop="typeName" label="所属品类" width="140"></el-table-column>
+        <el-table-column label="规格数量" width="120">
+            <template slot-scope="scope">
+                <el-popover placement="top" width="300" trigger="click">
+                    <el-tag v-for="item in gsTagList" effect="dark" class="mr20 mb10">{{item.specificationName}}</el-tag>
+                    <el-link slot="reference" type="primary" v-on:click="showGsListByTag(scope.row.id)" :underline="false">{{scope.row.gsNumber}}</el-link>
+                </el-popover>
+               
+            </template>
+        </el-table-column>
+        <el-table-column prop="createTime" label="创建时间" width="120"></el-table-column>
+        <el-table-column label="操作" width="120">
+            <template slot-scope="scope">
+                <i class="el-icon-tickets mr20" v-on:click="editGs(scope.row.id)" title="规格"></i>
+                <i class="el-icon-edit mr20" v-on:click="modifyShowDialog(scope.row)" title="编辑"></i>
+                <i class="el-icon-delete" v-on:click="del(scope.row)" title="删除"></i>
+            </template>
+        </el-table-column>
+    </el-table>
+    <el-pagination v-on:size-change="handleSizeChange"
+                   class="pagination"
+                   v-on:current-change="handleCurrentChange"
+                   :current-page.sync="pageIndex"
+                   :page-size="pageSize"
+                   layout="prev, pager, next, jumper"
+                   :total="total">
+    </el-pagination>
+</div>
+<el-dialog :title="dialogTitle" :visible.sync="dialogShow" :close-on-click-modal="false" width="500">
+    <el-form :model="model" :rules="rules" ref="ruleForm">
+        <el-form-item label="商品名称" prop="goodsName" :label-width="140">
+            <el-input v-model.trim="model.goodsName" class="input260"></el-input>
+        </el-form-item>
+        <el-form-item label="所属品类" prop="goodsTypeCode" :label-width="140">
+            <el-select v-model="model.goodsTypeCode" class="select260"
+                       filterable clearable
+                       placeholder="选择品类">
+                <el-option v-for="item in goodsTypeList"
+                           :key="item.id"
+                           :label="item.typeName"
+                           :value="item.code">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="所属品牌" prop="gbId" :label-width="140">
+            <el-select v-model="model.gbId"
+                       class="select260"
+                       filterable clearable
+                       placeholder="选择品牌">
+                <el-option v-for="item in goodsBrandList"
+                           :key="item.id"
+                           :label="item.enBrandName+'('+item.chsBrandName+')'"
+                           :value="item.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="商品描述" :label-width="140">
+            <el-input v-model.trim="model.goodsDesc" class="input260" type="textarea" :autosize="{ minRows: 2, maxRows: 2}"></el-input>
+        </el-form-item>
+    </el-form>
+    <div class="taCenter">
+        <el-button type="primary" v-on:click="save">保存</el-button>
+    </div>
+</el-dialog>
+<el-dialog title="编辑商品规格" :visible.sync="gsData.gsDialogShow" :close-on-click-modal="false" width="700">
+    <div style="max-height:320px;overflow-y:auto">
+        <el-form :model="gsData" :rules="gsData.rules" ref="gsRuleForm">
+            <el-table :data="getNotDelGsList" stripe class="tableList">
+                <el-table-column label="规格名称" width="180" align="center">
+                    <template slot-scope="scope">
+                        <el-form-item class="mb0" :prop="'gsList.'+scope.$index + '.specificationName'" :rules='gsData.rules.specificationName'>
+                            <el-input v-model.trim="scope.row.specificationName"></el-input>
+                        </el-form-item>
+                    </template>
+                </el-table-column> 
+                <el-table-column label="规格描述" width="180" align="center">
+                    <template slot-scope="scope">
+                        <el-form-item class="mb0">
+                            <el-input v-model.trim="scope.row.specificationDesc"></el-input>
+                        </el-form-item>
+                    </template>
+                </el-table-column>
+                <el-table-column label="专柜价格" width="120" align="center">
+                    <template slot-scope="scope">
+                        <el-form-item class="mb0" :prop="'gsList.'+scope.$index + '.price'" :rules='gsData.rules.price'>
+                            <el-input v-model.trim="scope.row.price"></el-input>
+                        </el-form-item>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="" align="center">
+                    <template slot-scope="scope">
+                        <i class="el-icon-circle-plus-outline mr20" v-on:click="addGs()" title="添加"></i>
+                        <i class="el-icon-delete" v-on:click="delGs(scope.$index)" title="删除"></i>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-form>
+    </div>
+    
+    <div class="taCenter">
+        <el-button type="primary" v-on:click="saveGs">保存</el-button>
+    </div>
+</el-dialog>
+
+@section Scripts{
+    <script type="text/javascript">
+        var that;
+        var app = new Vue({
+            el: "#app",
+            data: {
+                searchModel: {
+                    goodsName: "",
+                    gbId: "",
+                    goodsTypeCode: ""
+                },
+                goodsBrandList: [],
+                goodsTypeList: [],
+                loading: false,
+                tableData: [],
+                pageIndex: 1,
+                pageSize: 10,
+                total: 0,
+                dialogShow: false,
+                dialogTitle: "新增商品",
+                model: {},
+                rules: {
+                    goodsName: [{ required: true, message: '商品名称不能为空', trigger: 'blur' }],
+                    goodsTypeCode: [{ required: true, message: '所属品类不能为空', trigger: 'change' }],
+                    gbId: [{ required: true, message: '所属品牌不能为空', trigger: 'change' }],
+                },
+                currentGoodsId: 0,
+                gsData: {
+                    gsDialogShow: false,                    
+                    gsList: [],
+                    rules: {
+                        specificationName: [{ required: true, message: '规格名称不能为空', trigger: 'blur' }],
+                        price: [{ pattern: /^0$|^[1-9]*(\.[0-9]{1,2})?$|^0\.([0-9]{1,2})$/, message: '只能输入两位小数', trigger: 'blur' }]
+                    }
+                },
+                gsTagList:[]
+            },
+            mounted: function () {
+                asideApp.activeIndex = "3";
+                this.$nextTick(e => {
+                    that = this;
+                    that.searchList();
+                    that.getGoodsType();
+                    that.getGoodsBrandList()
+                });
+            },
+            computed: {
+                getNotDelGsList() {
+                    return this.gsData.gsList.filter(item => { return item.isDel == 0 });
+                }
+            },
+            methods: {
+                search() {
+                    that.pageIndex = 1;
+                    that.searchList();
+                },
+                searchList() {
+                    axios.get("/GoodsInfo/SearchListByPage", {
+                        params: {
+                            goodsName: that.searchModel.goodsName,
+                            gbId: that.searchModel.gbId,
+                            goodsTypeCode: that.searchModel.goodsTypeCode,
+                            pageIndex: that.pageIndex,
+                            pageSize: that.pageSize
+                        }
+                    }).then(res => {
+                        if (res.status == 200) {
+                            res.data.items.forEach(e => {
+                                e.createTime = dateFtt(e.createTime);
+                            })
+                            that.tableData = res.data.items;
+                            that.total = res.data.totalCount;
+                        }
+                    })
+                },
+                addShowDialog() {
+                    that.dialogShow = true;
+                    that.model = { goodsName: "", goodsTypeCode: "", gbId: "", goodsDesc: "", isDel: 0 };
+                    that.dialogTitle = "新增商品";
+                },
+                modifyShowDialog(item) {
+                    that.model = JSON.parse(JSON.stringify(item));
+                    that.dialogTitle = "修改商品";
+                    that.dialogShow = true;
+                },
+                add(item) {
+                    axios.post("/GoodsInfo/AddGoods", item).then(res => {
+                        if (res.status == 200) {
+                            if (res.data.code == 200) {
+                                that.$message.success("添加成功")
+                                that.pageIndex = 1;
+                                that.searchList();
+                            } else {
+                                that.$message.error(res.data.message)
+                            }
+
+                        } else {
+                            that.$message.error("添加失败")
+                        }
+                    })
+                },
+                modify(item) {
+                    axios.post("/GoodsInfo/ModifyGoods", item).then(res => {
+                        if (res.status == 200) {
+                            if (res.data.code == 200) {
+                                that.$message.success("修改成功")
+                                that.searchList();
+                            } else {
+                                that.$message.error(res.data.message)
+                            }
+                        } else {
+                            that.$message.error("修改失败")
+                        }
+                    })
+                },
+                del(item) {
+                    this.$confirm('确认删除该商品吗？', '确认信息', {
+                        distinguishCancelAndClose: true,
+                        confirmButtonText: '确认',
+                        cancelButtonText: '放弃'
+                    }).then(() => {
+                        axios.post("/GoodsInfo/DelGoodsInfo", item).then(res => {
+                            if (res.status == 200 && res.data.code == 200) {
+                                that.$message.success("删除成功")
+                                that.searchList();
+                            } else {
+                                that.$message.error("删除失败")
+                            }
+                        })
+                    });
+                },
+                save() {
+                    that.$refs["ruleForm"].validate((valid) => {
+                        if (valid) {
+                            if (that.model.id == undefined) {
+                                that.add(that.model);
+                            } else {
+                                that.modify(that.model);
+                            }
+
+                            that.dialogShow = false;
+                        }
+                    });
+                },
+                editGs(id) {
+                    that.currentGoodsId = id;
+                    that.gsData.gsDialogShow = true;
+                    that.getGsList(true);
+                },
+                showGsListByTag(id) {
+                    that.currentGoodsId = id;
+                    that.getGsList(false);
+                },
+                getGsList(isAddRow) {
+                    axios.get("/goodsInfo/getGsList?goodsId=" + that.currentGoodsId).then(res => {
+                        if (res.status == 200) {
+                            that.gsData.gsList = res.data;
+                            that.gsTagList = res.data;
+                            if (isAddRow && that.gsData.gsList.length == 0) {
+                                that.addGs()
+                            }
+                        }
+                    });
+                },
+                addGs() {
+                    var item = { id: 0, goodsId: that.currentGoodsId, specificationName: "", specificationDesc: "", price: "",isDel:0 };
+                    that.gsData.gsList.push(item)
+                },
+                delGs(index) {
+                    that.gsData.gsList[index].isDel = 1;
+                },
+                saveGs() {
+                    that.$refs["gsRuleForm"].validate((valid) => {
+                        if (valid) {
+                            axios.post("/goodsInfo/AddOrModifyGs", that.gsData.gsList).then(res => {
+                                if (res.status == 200) {
+                                    if (res.data.code == 200) {
+                                        that.$message.success("操作成功");
+                                        that.searchList();
+                                        that.gsData.gsDialogShow = false;
+                                    } else {
+                                        that.$message.error(res.data.message)
+                                    }
+                                } else {
+                                    that.$message.error("操作失败")
+                                }
+                            });
+                        }
+                    });
+                },
+                handleSizeChange(pageIndex) {
+                    that.pageIndex = pageIndex;
+                    that.searchList();
+                },
+                handleCurrentChange(pageIndex) {
+                    that.pageIndex = pageIndex;
+                    that.searchList();
+                },
+                getGoodsBrandList(key) {
+                    key = key || "";
+                    that.loading = true;
+                    axios.get("/GoodsBrand/GetAllList").then(res => {
+                        if (res.data.code == 200) {
+                            that.goodsBrandList = res.data.data;
+                        }
+                    });
+                },
+                goodsBrandSearch(key) {
+                    that.getGoodsBrandList(key);
+                },
+                getGoodsType() {
+                    axios.get("/GoodsType/GetAllList").then(res => {
+                        if (res.data.code == 200) {
+                            that.goodsTypeList = res.data.data;
+                        }
+                        console.log(res);
+                    });
+                },
+            }
+        })
+    </script>
+}

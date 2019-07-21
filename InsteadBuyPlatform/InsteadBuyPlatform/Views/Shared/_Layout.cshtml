@@ -21,6 +21,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- ios 改变顶部状态条的颜色 -->
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    @*<link rel="stylesheet" href="~/lib/element-ui-2.4.0/css/index.css">*@
     <link rel="stylesheet" href="~/css/site.css" />
     <script type="text/javascript" src="~/lib/vue-v2.6.8.min.js"></script>
     @RenderSection("Css", required: false)
@@ -33,21 +34,27 @@
         <el-menu :default-active="activeIndex"
                  class="el-menu-demo"
                  v-on:select="handleSelect">
-            <el-menu-item index="1">首页</el-menu-item>
+            <el-menu-item index="1"><i class="el-icon-s-shop"></i>首页</el-menu-item>
             <el-submenu index="2">
                 <template slot="title">
-                    基础信息管理
+                    <i class="el-icon-menu"></i>基础信息管理
                 </template>
                 <el-menu-item index="2-1">品牌管理</el-menu-item>
                 <el-menu-item index="2-2">品类管理</el-menu-item>
                 <el-menu-item index="2-3">客户管理</el-menu-item>
             </el-submenu>
-            <el-menu-item index="3">商品管理</el-menu-item>
-            <el-menu-item index="4">订单管理</el-menu-item>
-            <el-menu-item index="5">报表管理</el-menu-item>
+            <el-menu-item index="3"><i class="el-icon-s-goods"></i>商品管理</el-menu-item>
+            <el-menu-item index="4"><i class="el-icon-s-order"></i>订单管理</el-menu-item>
+            <el-submenu index="5">
+                <template slot="title">
+                    <i class="el-icon-s-data"></i>报表管理
+                </template>
+                <el-menu-item index="5-1">采购统计报表</el-menu-item>
+                <el-menu-item index="5-2">发货统计报表</el-menu-item>
+            </el-submenu>
             <el-submenu index="6">
                 <template slot="title">
-                    系统管理
+                    <i class="el-icon-s-tools"></i>系统管理
                 </template>
                 <el-menu-item index="6-1">角色管理</el-menu-item>
                 <el-menu-item index="6-2">权限管理</el-menu-item>
@@ -61,11 +68,10 @@
         </div>       
     </div>
 
-
-
     <script type="text/javascript" src="~/lib/axios.min.js"></script>
     <script type="text/javascript" src="~/js/site.js"></script>
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    @*<script src="~/lib/element-ui-2.4.0/index.js"></script>*@
     <script type="text/javascript" src="~/js/qs.js"></script>
     <script type="text/javascript">
         var asideApp = new Vue({
@@ -88,8 +94,27 @@
                         case "2-1":
                             url = "/GoodsBrand/Index";
                             break;
+                        case "2-2":
+                            url = "/GoodsType/Index";
+                            break;
+                        case "2-3":
+                            url = "/ClientInfo/Index";
+                            break;
+                        case "3":
+                            url = "/GoodsInfo/Index";
+                            break;
+                        case "4":
+                            url = "/OrderInfo/Index";
+                            break;
+                        case "5-1":
+                            url = "/Statistics/StatisticsByBrand";
+                            break;
+                        case "5-2":
+                            url = "/Statistics/StatisticsByClient";
+                            break;
                         default:
-                            url = "/Home/home";
+                            this.$message.error("功能暂未开发")
+                            return;
                             break;
                     }
 

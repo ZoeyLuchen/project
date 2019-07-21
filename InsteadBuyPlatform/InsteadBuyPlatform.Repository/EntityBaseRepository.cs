@@ -6,7 +6,6 @@ using System.Text;
 using InsteadBuyPlatform.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using EFCore.BulkExtensions;
 using InsteadBuyPlatform.Entity;
 
 namespace InsteadBuyPlatform.Repository
@@ -83,11 +82,11 @@ namespace InsteadBuyPlatform.Repository
 
         public virtual void BatchAdd(List<T> list)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            list.ForEach(item =>
             {
-                _context.BulkInsert(list);
-                transaction.Commit();
-            }
+                _context.Set<T>().Add(item);
+            });          
+            _context.SaveChanges();
         }
 
         public virtual void Update(T entity)
@@ -99,11 +98,11 @@ namespace InsteadBuyPlatform.Repository
 
         public virtual void BatchUpdate(List<T> list)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            list.ForEach(item =>
             {
-                _context.BulkUpdate(list);
-                transaction.Commit();
-            }
+                _context.Set<T>().Update(item);
+            });
+            _context.SaveChanges();
         }
 
         public virtual void Delete(T entity)

@@ -47,5 +47,44 @@ namespace InsteadBuyPlatform.Repository.Repository
             var list = _context.Database.SqlQuery<GoodsInfo>(sql, sqlParam.ToArray());
             return list;
         }
+
+        public PageModel<GoodsInfoView> SearchListByPage(GoodsInfoParam param, PageInfo pageInfo)
+        {
+            string sqlWhere = " where gi.IsDel = 0 ";
+            var sqlParam = new List<DbParameter>();
+
+            if (!string.IsNullOrEmpty(param.GoodsName))
+            {
+                sqlWhere += " and (gi.GoodsName like @GoodsName) ";
+                sqlParam.Add(new MySqlParameter("@GoodsName", "%" + param.GoodsName + "%"));
+            }
+
+            if (!string.IsNullOrEmpty(param.GoodsTypeCode))
+            {
+                sqlWhere += " and (gi.GoodsTypeCode = @GoodsTypeCode) ";
+                sqlParam.Add(new MySqlParameter("@GoodsTypeCode", param.GoodsTypeCode));
+            }
+
+            if (param.GbId != null)
+            {
+                sqlWhere += " and (gi.GbId = @GbId) ";
+                sqlParam.Add(new MySqlParameter("@GbId", param.GbId));
+            }
+
+            string sql = $@"select gi.*,gb.ChsBrandName,gb.EnBrandName,gt.TypeName,count(gs.Id) as GsNumber
+                                from goodsinfo gi
+                                LEFT JOIN goodsbrand gb on gi.GbId = gb.Id
+                                LEFT JOIN goodstype gt on gt.`Code` = gi.GoodsTypeCode
+                                LEFT JOIN goodsspecification gs on gs.GoodsId = gi.Id 
+                            {sqlWhere} 
+                            GROUP BY gi.Id order by gi.id desc";
+
+            string sqlCount = $"select count(*) from GoodsInfo gi {sqlWhere}";
+
+            var list = _context.Database.SqlQuery<GoodsInfoView>(sql.ToPaginationSql(pageInfo), sqlParam.ToArray());
+            var count = _context.Database.ExcuteSclare(sqlCount, sqlParam.ToArray());
+
+            return new PageModel<GoodsInfoView>(list, pageInfo.PageIndex, pageInfo.PageSize, Convert.ToInt32(count));
+        }
     }
 }

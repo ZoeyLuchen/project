@@ -16,49 +16,65 @@ namespace InsteadBuyPlatform.Repository.Repository
         {
         }
 
-        public PageModel<OrderInfoView> GetListByPages(PageInfo pageInfo, OrderInfoParam param)
+        /// <summary>
+        /// 后台订单列表查询
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="pageInfo"></param>
+        /// <returns></returns>
+        public PageModel<OrderInfoView2> SearchListByPage(OrderInfoParam param, PageInfo pageInfo)
         {
-            return null;
-            //string sqlWhere = " where o.isDel = 0 ";
-            //var sqlParam = new List<DbParameter>();
-            //if (param.Status != 0)
-            //{
-            //    sqlWhere += " and o.Status = @Status ";
-            //    sqlParam.Add(new MySqlParameter("@Status", param.Status));
-            //}
-            //if (!string.IsNullOrEmpty(param.Phone))
-            //{
-            //    sqlWhere += " and o.Phone like @Phone ";
-            //    sqlParam.Add(new MySqlParameter("@Phone", "%"+param.Phone+"%"));
-            //}
-            //if (!string.IsNullOrEmpty(param.Consignee))
-            //{
-            //    sqlWhere += " and o.Consignee like @Consignee ";
-            //    sqlParam.Add(new MySqlParameter("@Consignee", "%" + param.Consignee+"%"));
-            //}
-            //if (param.BeginTime != null)
-            //{
-            //    sqlWhere += " and o.CreateTime > @BeginTime ";
-            //    sqlParam.Add(new MySqlParameter("@BeginTime", param.BeginTime));
-            //}
-            //if (param.EndTime != null)
-            //{
-            //    sqlWhere += " and o.CreateTime < @EndTime ";
-            //    sqlParam.Add(new MySqlParameter("@EndTime", param.EndTime));
-            //}
+            var sqlParam = new List<DbParameter>();
+            string sqlWhere = " where oi.isDel=0 and oi.userId=@UserId ";
+            sqlParam.Add(new MySqlParameter("@UserId", param.UserId));
 
-            //string sql = @"select o.id as OrderId, o.OrderNo, CONCAT(o.ProvinceName,o.CityName,o.CountyName, ' ',o.DetailedAddress) Address,
-            //                o.Consignee,o.Phone,o.BuyQuantity,o.Message,o.OrderAmount,o.Status,o.CreateTime,g.SpecificationDesc,
-            //                sg.TrackingNo,sg.CourierCompany,sg.Remarks
-            //                from orderinfo o
-            //                LEFT JOIN goodsinfo g on o.GoodsId = g.Id
-            //                LEFT JOIN SendGoodsInfo sg on o.id = sg.OrderId " + sqlWhere + " order by o.createTime ";
-            //string sqlCount = "select count(*) from OrderInfo o "+ sqlWhere;
+            if (param.BeginDate != null)
+            {
+                sqlWhere += " and oi.CreateTime > @BeginDate ";
+                sqlParam.Add(new MySqlParameter("@BeginDate", param.BeginDate));
+            }
 
-            //var list = _context.Database.SqlQuery<OrderInfoView>(sql.ToPaginationSql(pageInfo), sqlParam.ToArray());
-            //var count = _context.Database.ExcuteSclare(sqlCount, sqlParam.ToArray());
+            if (param.EndDate != null)
+            {
+                sqlWhere += " and oi.CreateTime < @EndDate ";
+                sqlParam.Add(new MySqlParameter("@EndDate", param.EndDate));
+            }
 
-            //return new PageModel<OrderInfoView>(list, pageInfo.PageIndex, pageInfo.PageSize, Convert.ToInt32(count));
+            if (!string.IsNullOrEmpty(param.ClientName))
+            {
+                sqlWhere += " and (ci.ClientName like @ClientName or ci.ClientPhone like @ClientName) ";
+                sqlParam.Add(new MySqlParameter("@ClientName", "%" + param.ClientName + "%"));
+            }
+
+            string sql = $@"SELECT oi.*,ci.ClientName,ci.ClientPhone 
+                            from orderinfo oi
+                            LEFT JOIN clientinfo ci on oi.clientId = ci.id {sqlWhere} order by oi.id desc ";
+
+            string sqlCount = $@"SELECT count(*)  
+                            from orderinfo oi
+                            LEFT JOIN clientinfo ci on oi.clientId = ci.id {sqlWhere} ";
+
+            var list = _context.Database.SqlQuery<OrderInfoView2>(sql.ToPaginationSql(pageInfo), sqlParam.ToArray());
+            var count = _context.Database.ExcuteSclare(sqlCount, sqlParam.ToArray());
+
+            return new PageModel<OrderInfoView2>(list, pageInfo.PageIndex, pageInfo.PageSize, Convert.ToInt32(count));
+        }
+
+        /// <summary>
+        /// 根据订单Id查询订单商品
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public List<OrderGoodsView> GetOrderGoodsList(int orderId)
+        {
+            string sql = $@"select og.*,CONCAT(gi.goodsName,'(',gb.ChsBrandName,')') as goodsName,gs.SpecificationName as GsName 
+                            from ordergoods og
+                            LEFT JOIN goodsinfo gi on og.goodsId =gi.id
+                            LEFT JOIN goodsbrand gb on gi.gbid = gb.id
+                            LEFT JOIN goodsspecification gs on og.gsId = gs.id
+                            where og.orderId = {orderId}";
+            var list = _context.Database.SqlQuery<OrderGoodsView>(sql);
+            return list;
         }
 
         /// <summary>
@@ -72,8 +88,9 @@ namespace InsteadBuyPlatform.Repository.Repository
             {
                 try
                 {
-                    var orderInfo = new OrderInfo() {
-                        ClientId = orderInfoView.ClientId??0,
+                    var orderInfo = new OrderInfo()
+                    {
+                        ClientId = orderInfoView.ClientId ?? 0,
                         CreateTime = DateTime.Now,
                         UserId = orderInfoView.UserId,
                         IsDel = 0,
@@ -100,6 +117,76 @@ namespace InsteadBuyPlatform.Repository.Repository
                     return false;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 按品牌统计
+        /// </summary>
+        /// <returns></returns>
+        public List<StatisticsView> GetDataByBrand(StatisticsParam param)
+        {
+            var sqlParam = new List<DbParameter>();
+            string sqlWhere = " where oi.userId=@UserId ";
+            sqlParam.Add(new MySqlParameter("@UserId", param.UserId));
+
+            if (param.BeginDate != null)
+            {
+                sqlWhere += " and oi.CreateTime > @BeginDate ";
+                sqlParam.Add(new MySqlParameter("@BeginDate", param.BeginDate));
+            }
+
+            if (param.EndDate != null)
+            {
+                sqlWhere += " and oi.CreateTime < @EndDate ";
+                sqlParam.Add(new MySqlParameter("@EndDate", param.EndDate));
+            }
+
+            string sql = $@"select gb.ChsBrandName,gb.EnBrandName,gi.GoodsName,gs.SpecificationName,CONVERT(sum(og.GoodsNum),SIGNED) as num 
+                            from orderinfo oi
+                            LEFT JOIN ordergoods og on oi.id = og.orderId
+                            LEFT JOIN goodsinfo gi on og.goodsId = gi.id
+                            LEFT JOIN goodsspecification gs on og.gsId = gs.Id
+                            LEFT JOIN goodsbrand gb on gi.gbId = gb.id
+                            {sqlWhere}
+                            group BY gb.id,gi.id,gs.id";
+            var list = _context.Database.SqlQuery<StatisticsView>(sql, sqlParam.ToArray());
+            return list;
+        }
+
+        /// <summary>
+        /// 按客户名统计
+        /// </summary>
+        /// <returns></returns>
+        public List<StatisticsView> GetDataByClient(StatisticsParam param)
+        {
+            var sqlParam = new List<DbParameter>();
+            string sqlWhere = " where oi.userId=@UserId ";
+            sqlParam.Add(new MySqlParameter("@UserId", param.UserId));
+
+            if (param.BeginDate != null)
+            {
+                sqlWhere += " and oi.CreateTime > @BeginDate ";
+                sqlParam.Add(new MySqlParameter("@BeginDate", param.BeginDate));
+            }
+
+            if (param.EndDate != null)
+            {
+                sqlWhere += " and oi.CreateTime < @EndDate ";
+                sqlParam.Add(new MySqlParameter("@EndDate", param.EndDate));
+            }
+
+            string sql = $@"select ci.ClientName, gb.ChsBrandName,gb.EnBrandName,gi.GoodsName,gs.SpecificationName,CONVERT(sum(og.GoodsNum),SIGNED) as num 
+                            from orderinfo oi
+                            LEFT JOIN clientinfo ci on oi.ClientId = ci.id
+                            LEFT JOIN ordergoods og on oi.id = og.orderId
+                            LEFT JOIN goodsinfo gi on og.goodsId = gi.id
+                            LEFT JOIN goodsspecification gs on og.gsId = gs.Id
+                            LEFT JOIN goodsbrand gb on gi.gbId = gb.id
+                            {sqlWhere}
+                            group BY ci.id,gb.id,gi.id,gs.id";
+            var list = _context.Database.SqlQuery<StatisticsView>(sql, sqlParam.ToArray());
+            return list;
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace InsteadBuyPlatform.Entity
 {
-    public class GoodsBrandParam: BaseParam
+    public class GoodsTypeParam
     {
-        public string GoodsBrandName { get; set; }
+        public string TypeName { get; set; }
 
         public int IsDel { get; set; }
     }

@@ -21,27 +21,49 @@ namespace InsteadBuyPlatform.Controllers
         }
 
         /// <summary>
+        /// 查询数据列表
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="pageInfo"></param>
+        /// <returns></returns>
+        public IActionResult SearchListByPage(GoodsTypeParam param, PageInfo pageInfo)
+        {
+            var result = _goodsTypeRepository.SearchListByPage(param, pageInfo);
+            return Json(result);
+        }
+
+        /// <summary>
         /// 新增
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public IActionResult Add(GoodsType model)
+        public IActionResult Add([FromBody]GoodsType model)
         {
-            model.IsDel = 0;
-
             try
             {
-                _goodsTypeRepository.Add(model);
+                if (_goodsTypeRepository.Count(e => e.TypeName == model.TypeName && e.IsDel == 0) > 0)
+                {
+                    return JsonError("品类名重复");
+                }
+
+                model.IsDel = 0;               
                 model.UpdateTime = model.CreateTime = DateTime.Now;
                 model.UpdateBy = model.CreateBy = CurrentUser.Id;
                 if (string.IsNullOrEmpty(model.PCode))
                 {
-                    model.Code = (_goodsTypeRepository.Count(e => e.PCode == "") + 1).ToString("000");
+                    model.Code = (_goodsTypeRepository.Count(e => e.PCode == "") + 1).ToString("00");
                 }
                 else
                 {
-                    model.Code = model.PCode + (_goodsTypeRepository.Count(e => e.PCode == model.PCode) + 1).ToString("000");
+                    model.Code = model.PCode + (_goodsTypeRepository.Count(e => e.PCode == model.PCode) + 1).ToString("00");
                 }
+
+                if (_goodsTypeRepository.Count(e => e.Code == model.Code) > 0)
+                {
+                    return JsonError("品类无法添加,请联系管理员");
+                }
+
+                _goodsTypeRepository.Add(model);
                 return JsonOk("");
             }
             catch (Exception ex)
@@ -55,10 +77,15 @@ namespace InsteadBuyPlatform.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public IActionResult Modify(GoodsType model)
+        public IActionResult Modify([FromBody]GoodsType model)
         {
             try
             {
+                if (model.IsDel != 1 && _goodsTypeRepository.Count(e => e.Id != model.Id && e.TypeName == model.TypeName && e.IsDel == 0) > 0)
+                {
+                    return JsonError("品类名重复");
+                }
+
                 var oldModel = _goodsTypeRepository.GetSingle(model.Id);
                 oldModel.TypeName = model.TypeName;
                 oldModel.IsDel = model.IsDel;

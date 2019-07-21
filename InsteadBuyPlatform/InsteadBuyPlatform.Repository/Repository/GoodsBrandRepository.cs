@@ -18,10 +18,10 @@ namespace InsteadBuyPlatform.IRepository
         {
             string sqlWhere = " where 1=1 ";
             var sqlParam = new List<DbParameter>();
-            if (param.isDel != -1)
+            if (param.IsDel != -1)
             {
                 sqlWhere += " and IsDel = @IsDel ";
-                sqlParam.Add(new MySqlParameter("@IsDel", param.isDel));
+                sqlParam.Add(new MySqlParameter("@IsDel", param.IsDel));
             }
 
             if (!string.IsNullOrEmpty(param.GoodsBrandName))

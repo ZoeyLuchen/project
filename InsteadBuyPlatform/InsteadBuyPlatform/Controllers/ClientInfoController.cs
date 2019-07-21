@@ -26,19 +26,38 @@ namespace InsteadBuyPlatform.Controllers
         }
 
         /// <summary>
+        /// 查询数据列表
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="pageInfo"></param>
+        /// <returns></returns>
+        public IActionResult SearchListByPage(ClientInfoParam param, PageInfo pageInfo)
+        {
+            param.UserId = CurrentUser.Id;
+
+            var result = _clientInfoRepository.SearchListByPage(param, pageInfo);
+            return Json(result);
+        }
+
+        /// <summary>
         /// 新增客户
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public IActionResult Add(ClientInfo model)
+        public IActionResult Add([FromBody]ClientInfo model)
         {
-            model.IsDel = 0;
-            model.CreateTime = DateTime.Now;
-            model.UserId = CurrentUser.Id;
-            model.UpdateTime = DateTime.Now;
-
             try
             {
+                if (_clientInfoRepository.Count(e => e.ClientName == model.ClientName && e.UserId == CurrentUser.Id && e.IsDel == 0) > 0)
+                {
+                    return JsonError("客户名重复");
+                }
+
+                model.IsDel = 0;
+                model.CreateTime = DateTime.Now;
+                model.UserId = CurrentUser.Id;
+                model.UpdateTime = DateTime.Now;
+
                 _clientInfoRepository.Add(model);
                 return JsonOk("");
             }
@@ -53,10 +72,15 @@ namespace InsteadBuyPlatform.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public IActionResult Modify(ClientInfo model)
+        public IActionResult Modify([FromBody]ClientInfo model)
         {
             try
             {
+                if (_clientInfoRepository.Count(e => e.ClientName == model.ClientName && e.Id != model.Id && e.UserId == CurrentUser.Id && e.IsDel == 0) > 0)
+                {
+                    return JsonError("客户名重复");
+                }
+
                 var oldModel = _clientInfoRepository.GetSingle(model.Id);
                 oldModel.UpdateTime = DateTime.Now;
                 oldModel.ProvinceName = model.ProvinceName;
@@ -82,11 +106,11 @@ namespace InsteadBuyPlatform.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromBody]ClientInfo model)
         {
             try
             {
-                var oldModel = _clientInfoRepository.GetSingle(id);
+                var oldModel = _clientInfoRepository.GetSingle(model.Id);
                 oldModel.IsDel = 1;
                 _clientInfoRepository.Update(oldModel);
                 return JsonOk("");
